@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentWorkflow.Core.DAL;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using DbContext = DocumentWorkflow.Core.DAL.DbContext;
 
 namespace DocumentWorkflow.Controllers
 {
@@ -6,28 +9,27 @@ namespace DocumentWorkflow.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        private readonly DbContext _dbContext;
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(DbContext context)
         {
-            _logger = logger;
+            _dbContext = context;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public ActionResult Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var users = _dbContext.Users
+                .Include(u => u.Roles)
+                .ThenInclude(u => u.Role)
+                .ToList()
+                .Select(u => new
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                name = u.Name,
+                roles = string.Join(",", u.Roles.Select(r => $"RoleName={r.Role.Name}, IsAdmin:{r.Role.IsAdmin}"))
+            });
+
+            return Ok(users);
         }
     }
 }
