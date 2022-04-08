@@ -13,17 +13,42 @@ namespace DocumentWorkflow.Core.DAL
                 return;   // DB has been seeded
             }
 
+            context.DocumentCategories.AddRange(new[]
+            {
+                new DocumentCategory
+                {
+                    Id = 1,
+                    ParentId = null,
+                    Name = "Категория документа №1"
+                },
+                new DocumentCategory
+                {
+                    Id = 2,
+                    ParentId = 1,
+                    Name = "Под категория документа №1_1"
+                },
+            });
+            context.SaveChanges();
+
             context.DocumentTypes.AddRange(new []
             {
                 new DocumentType
                 {
                     Id = 1,
-                    Name = "Тип документа №1"
+                    Name = "Тип документа №1",
+                    DocumentCategoryId = 1
                 },
                 new DocumentType
                 {
                     Id = 2,
-                    Name = "Тип документа №2"
+                    Name = "Тип документа №2_1",
+                    DocumentCategoryId = 2
+                },
+                new DocumentType
+                {
+                    Id = 2,
+                    Name = "Тип документа №2_2",
+                    DocumentCategoryId = 2
                 }
             });
             context.SaveChanges();
@@ -51,25 +76,6 @@ namespace DocumentWorkflow.Core.DAL
                     CreatedDate = DateTime.Now,
                     Filename = "TemplateFile2_1.xls"
                 }
-            });
-            context.SaveChanges();
-
-            context.DocumentCategories.AddRange(new []
-            {
-                new DocumentCategory
-                {
-                    Id = 1,
-                    ParentId = null,
-                    DocumentTypeId = 1,
-                    Name = "Категория документа №1"
-                },
-                new DocumentCategory
-                {
-                    Id = 2,
-                    ParentId = 1,
-                    DocumentTypeId = 2,
-                    Name = "Под категория документа №1_1"
-                },
             });
             context.SaveChanges();
 
