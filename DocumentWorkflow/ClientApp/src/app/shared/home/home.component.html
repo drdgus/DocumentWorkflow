@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="form-check" >
+      <ng-container *ngFor="let type of types">
+        <input type="radio" class="btn-check" [(ngModel)]="selectedTypeId" [value]="type.id" (change)="onTypeChange()" name="options-outlined" id="{{type.id}}" autocomplete="off">
+        <label class="btn btn-outline-success" for="{{type.id}}">{{type.name}}</label>
+      </ng-container>
+    </div>
+  </div>
+
+    <div class="row mt-4">
+        <div class="col-3">
+            <select class="form-select" size="30" [(ngModel)]="selectedCategoryId" (change)="onCategoryChange()">
+                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+            </select>
+        </div>
+      <div class="col-9 bg-light card">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>№ Документа</th>
+            <th>Название</th>
+            <th>Дата создания</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let document of documents">
+            <td>{{document.number.toString().replace(".", " / ")}}</td>
+            <td>{{document.name}}</td>
+            <td>{{document.createdDate}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

@@ -8,6 +8,6 @@ namespace DocumentWorkflow.Core.DAL.Entities
         public string Name { get; set; }
         public Byte[] Password { get; set; }
 
-        public ICollection<UserRoles> Roles { get; } = new List<UserRoles>();
+        public virtual ICollection<UserRoles> Roles { get; } = new List<UserRoles>();
     }
 }

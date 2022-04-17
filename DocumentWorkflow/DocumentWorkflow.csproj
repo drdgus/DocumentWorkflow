@@ -24,9 +24,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\DAL\Repositories\" />
+    <None Remove="ClientApp\src\app\models\MyDocumentType.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\admin\" />
     <Folder Include="Core\Models\" />
     <Folder Include="Core\Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\models\MyDocumentType.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

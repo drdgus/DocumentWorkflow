@@ -2,16 +2,10 @@
 {
     public class UserRoles
     {
-        public UserRoles(int? userId, int roleId)
-        {
-            UserId = roleId;
-            RoleId = roleId;
-        }
-        public int? UserId { get; private set; }
-        public int RoleId { get; private set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
 
         public virtual Role Role { get; set; }
-
-
     }
 }

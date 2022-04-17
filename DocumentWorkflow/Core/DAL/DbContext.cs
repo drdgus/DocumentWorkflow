@@ -27,8 +27,8 @@ namespace DocumentWorkflow.Core.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CategoryRights>().HasNoKey();
-            modelBuilder.Entity<UserRoles>().HasNoKey();
+            //modelBuilder.Entity<CategoryRights>().HasNoKey();
+            //modelBuilder.Entity<UserRoles>().HasNoKey();
         }
     }
 }

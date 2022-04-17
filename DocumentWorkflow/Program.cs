@@ -1,4 +1,5 @@
 using DocumentWorkflow.Core.DAL;
+using DocumentWorkflow.Core.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using DbContext = DocumentWorkflow.Core.DAL.DbContext;
 
@@ -10,6 +11,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DbContext>(options =>
     options.UseSqlite("Data Source=DocumentWorkflow.db;"));
+
+builder.Services.AddTransient<CategoriesRepository>();
+builder.Services.AddTransient<TypesRepository>();
+builder.Services.AddTransient<DocumentsRepository>();
 
 var app = builder.Build();
 
