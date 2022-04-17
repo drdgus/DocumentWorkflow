@@ -7,6 +7,7 @@ namespace DocumentWorkflow.Core.DAL.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public Byte[] Password { get; set; }
-        public List<UserRoles> Roles { get; set; }
+
+        public ICollection<UserRoles> Roles { get; } = new List<UserRoles>();
     }
 }

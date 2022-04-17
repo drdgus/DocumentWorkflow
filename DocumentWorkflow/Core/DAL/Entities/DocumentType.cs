@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int DocumentCategoryId { get; set; }
+        public string TemplateFileName { get; set; }
     }
 }
