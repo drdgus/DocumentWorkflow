@@ -16,6 +16,12 @@ builder.Services.AddTransient<CategoriesRepository>();
 builder.Services.AddTransient<TypesRepository>();
 builder.Services.AddTransient<DocumentsRepository>();
 
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.ListenAnyIP(5074); // to listen for incoming http connection
+//    options.ListenAnyIP(7074, configure => configure.UseHttps()); // to listen for incoming https connection
+//});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

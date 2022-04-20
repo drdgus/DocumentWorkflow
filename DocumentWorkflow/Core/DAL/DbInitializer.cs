@@ -181,7 +181,7 @@ namespace DocumentWorkflow.Core.DAL
             context.Documents.AddRange(Enumerable.Range(1, 100).Select(i => new Document
             {
                 Id = i,
-                Number = (i % 10 == 0 ? i + 0.2f : i),
+                Number = (i % 10 == 0 ? i + 0.1f : i),
                 CreatedDate = DateTime.Now,
                 Name = $"Название {i}",
                 Content = "Et aliquip lorem et eu et facilisi sed sit tempor amet ipsum vel amet justo eirmod sed ipsum sea rebum",

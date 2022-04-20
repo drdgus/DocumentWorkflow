@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-3">
+    <div class="card bg-success">
+      <span class="card-body text-white">Категория: (Выбранная категория)</span>
+    </div>
+  </div>
+  <div class="col-9 card">
+    <div class="card-body">
+      <div class="form-floating mb-1" *ngFor="let inputElem of inputElements">
+        <input type="{{inputElem.inputType}}" class="form-control" id="{{inputElem.name}}" placeholder="{{inputElem.name}}" value="{{inputElem.value}}">
+        <label for="{{inputElem.name}}">{{inputElem.name}}</label>
+      </div>
+
+      <button class="btn btn-primary mt-2" type="submit">Создать</button>
+    </div>
+  </div>
+</div>

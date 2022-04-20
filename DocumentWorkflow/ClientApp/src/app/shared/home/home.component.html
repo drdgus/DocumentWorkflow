@@ -1,21 +1,30 @@
 <div class="container">
   <div class="row">
-    <div class="form-check" >
+    <div class="form-check">
       <ng-container *ngFor="let type of types">
-        <input type="radio" class="btn-check" [(ngModel)]="selectedTypeId" [value]="type.id" (change)="onTypeChange()" name="options-outlined" id="{{type.id}}" autocomplete="off">
+        <input type="radio" class="btn-check" [(ngModel)]="selectedTypeId" [value]="type.id" (change)="onTypeChange()"
+          name="options-outlined" id="{{type.id}}" autocomplete="off">
         <label class="btn btn-outline-success" for="{{type.id}}">{{type.name}}</label>
       </ng-container>
     </div>
   </div>
 
-    <div class="row mt-4">
-        <div class="col-3">
-            <select class="form-select" size="30" [(ngModel)]="selectedCategoryId" (change)="onCategoryChange()">
-                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
-            </select>
+  <div class="row mt-4">
+    <div class="col-3">
+      <select class="form-select" size="30" [(ngModel)]="selectedCategoryId" (change)="onCategoryChange()">
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+      </select>
+    </div>
+
+    <div class="col-9 bg-light card">
+      <div class="card-body">
+        <div>
+          <button class="btn btn-outline-primary" [routerLink]="['./create-document']">
+            Создать документ
+          </button>
         </div>
-      <div class="col-9 bg-light card">
-        <table class="table">
+
+        <table class="table mt-4">
           <thead>
           <tr>
             <th>№ Документа</th>
@@ -33,4 +42,5 @@
         </table>
       </div>
     </div>
+  </div>
 </div>
