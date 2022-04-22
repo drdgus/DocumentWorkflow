@@ -25,7 +25,7 @@ import { DatePipe } from '@angular/common'
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'create-document', component: CreateDocumentComponent, pathMatch: 'full' }
+      { path: 'create-document/:selectedCategoryId', component: CreateDocumentComponent}
     ]),
     BrowserAnimationsModule,
     

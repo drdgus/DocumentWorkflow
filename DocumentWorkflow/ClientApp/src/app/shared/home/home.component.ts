@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Category } from '../../models/Category';
 import { MyDocumentType } from '../../models/MyDocumentType';
 import { MyDocument } from '../../models/MyDocument';
+import { CategoryService } from '../../services/category.service';
+import { Observable, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,14 @@ export class HomeComponent implements OnInit {
   public documents: MyDocument[] = new Array<MyDocument>();
 
   public selectedTypeId:number  = 0;
-  public selectedCategoryId:number  = 0;
+  public selectedCategoryId: number = 0;
+
+  private readonly categoryService: CategoryService;
+
+  public constructor(categoryService: CategoryService)
+  {
+    this.categoryService = categoryService;
+  }
 
   public ngOnInit(): void
   {
@@ -25,7 +33,7 @@ export class HomeComponent implements OnInit {
   public onTypeChange(): any
   {
     console.log(`TypeChanged id = ${this.selectedTypeId}`);
-    this.categories = new Array<Category>();
+    this.categories = new Array();
     this.documents = new Array<MyDocument>();
     this.selectedCategoryId = 0;
     this.setCategories();
@@ -51,17 +59,11 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  private setCategories(): void {
-    const requestOptions: object = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    fetch(`/api/v1/Categories/${this.selectedTypeId}`, (requestOptions) as any)
-      .then(text => text.json())
-      .then((categories: Array<Category>) => {
-        this.categories = categories;
-      });
+  private setCategories(): void
+  {
+    console.log("categoryService guid = " + this.categoryService.guid + " called from homeComponent/setCategories()");
+    this.categories = this.categoryService.getCategories(this.selectedTypeId);
+    console.log("end setCategories()");
   }
 
   private setDocuments(): void
@@ -78,38 +80,3 @@ export class HomeComponent implements OnInit {
       });
   }
 }
-
-interface FoodNode {
-  name: string;
-  children?: FoodNode[];
-}
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [{name: 'Apple'}, {name: 'Banana'}, {name: 'Fruit loops'}],
-  },
-  {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
-      },
-      {
-        name: 'Orange',
-        children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
-      },
-    ],
-  },
-];
-
-/** Flat node with expandable and level information */
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-}
-
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';

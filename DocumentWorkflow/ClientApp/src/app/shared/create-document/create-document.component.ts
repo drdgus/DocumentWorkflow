@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common'
+import { Component, OnInit, Input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Category } from '../../models/Category';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-create-document',
@@ -7,16 +10,6 @@ import { DatePipe } from '@angular/common'
   styleUrls: ['./create-document.component.css']
 })
 export class CreateDocumentComponent implements OnInit {
-
-  constructor(private datePipe: DatePipe) { }
-
-  private transformDate(date: any) {
-    return this.datePipe.transform(date, 'dd.MM.yyyy HH:mm:ss');
-  }
-
-
-  ngOnInit(): void {
-  }
 
   public inputElements: IInputElement[] = new Array<IInputElement>(
     { name: "Номер документа", inputType: "number", value: "1" },
@@ -26,6 +19,21 @@ export class CreateDocumentComponent implements OnInit {
     { name: "elem4", inputType: "number", value: "23" },
     { name: "elem5", inputType: "number", value: "" },
   );
+
+  private selectedCategoryId!: Category;
+
+  constructor(private datePipe: DatePipe, private route: ActivatedRoute) { }
+
+  public ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      console.log('The selectedCategoryId of this route is: ', params.selectedCategoryId);
+      this.selectedCategoryId = params.selectedCategoryId;
+    });
+  }
+
+  private transformDate(date: any) {
+    return this.datePipe.transform(date, 'dd.MM.yyyy HH:mm:ss');
+  }
 }
 
 export interface IInputElement
