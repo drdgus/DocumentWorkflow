@@ -1,5 +1,14 @@
-export class Category {
-  public id:number = 0;
-  public parentId: number = 0;
-  public name: string = '';
+import {LogBook} from "./logBook";
+import {TemplateField} from "./templateField";
+
+export interface Category {
+  id:number;
+  parentId: number;
+  name: string;
+  customTemplateFileName: string;
+  documentTypeId: number;
+  logBookId: number;
+  documentType: DocumentType;
+  logBook: LogBook;
+  fields: TemplateField[];
 }

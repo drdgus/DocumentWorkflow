@@ -1,7 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Category } from '../../models/Category';
+import { Router } from '@angular/router'
 import { ActivatedRoute } from '@angular/router';
+import {CategoryService} from "../../services/category.service";
+import { Category } from "../../models/category";
+import {DocumentService} from "../../services/document.service";
 
 
 @Component({
@@ -11,34 +14,38 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CreateDocumentComponent implements OnInit {
 
-  public inputElements: IInputElement[] = new Array<IInputElement>(
-    { name: "Номер документа", inputType: "number", value: "1" },
-    { name: "Название документа", inputType: "text", value: "(Выбранная категория)" },
-    { name: "Дата создания", inputType: "datetime", value: this.transformDate(Date.now()) },
-    { name: "elem3", inputType: "text", value: "текст" },
-    { name: "elem4", inputType: "number", value: "23" },
-    { name: "elem5", inputType: "number", value: "" },
-  );
+  public category!: Category;
 
-  private selectedCategoryId!: Category;
+  private selectedCategoryId!: number;
 
-  constructor(private datePipe: DatePipe, private route: ActivatedRoute) { }
+  public constructor(
+    private datePipe: DatePipe,
+    private router: Router,
+    private route: ActivatedRoute,
+    private categoryService: CategoryService,
+    private documentService: DocumentService){}
 
   public ngOnInit(): void {
     this.route.params.subscribe(params => {
       console.log('The selectedCategoryId of this route is: ', params.selectedCategoryId);
       this.selectedCategoryId = params.selectedCategoryId;
     });
+
+    this.setCategory();
+    console.log(this.category);
+    console.log(this.category.fields);
+  }
+
+  public createDocument(): void{
+    this.documentService.createDocument(this.category).then(d => alert("Документ создан!"));
+    this.router.navigate(["/"]);
+  }
+
+  private setCategory(): void{
+    this.categoryService.getCategory(this.selectedCategoryId).then(category => this.category = category);
   }
 
   private transformDate(date: any) {
     return this.datePipe.transform(date, 'dd.MM.yyyy HH:mm:ss');
   }
-}
-
-export interface IInputElement
-{
-  name: string;
-  inputType: string;
-  value: any;
 }

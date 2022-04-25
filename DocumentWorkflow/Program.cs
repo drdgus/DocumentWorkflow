@@ -1,5 +1,6 @@
 using DocumentWorkflow.Core.DAL;
 using DocumentWorkflow.Core.DAL.Repositories;
+using DocumentWorkflow.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using DbContext = DocumentWorkflow.Core.DAL.DbContext;
 
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<DbContext>(options =>
 builder.Services.AddTransient<CategoriesRepository>();
 builder.Services.AddTransient<TypesRepository>();
 builder.Services.AddTransient<DocumentsRepository>();
+builder.Services.AddTransient<DocumentCreator>();
 
 //builder.WebHost.ConfigureKestrel(options =>
 //{

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="form-check">
       <ng-container *ngFor="let type of types">
-        <input type="radio" class="btn-check" [(ngModel)]="selectedTypeId" [value]="type.id" (change)="onTypeChange()"
+        <input type="radio" class="btn-check" [(ngModel)]="selectedTypeId" [value]="type.id" (change)="onTypeChanged()"
           name="options-outlined" id="{{type.id}}" autocomplete="off">
         <label class="btn btn-outline-success" for="{{type.id}}">{{type.name}}</label>
       </ng-container>
@@ -11,7 +11,7 @@
 
   <div class="row mt-4">
     <div class="col-3">
-      <select class="form-select" size="30" [(ngModel)]="selectedCategoryId" (change)="onCategoryChange()">
+      <select class="form-select" size="30" [(ngModel)]="selectedCategoryId" (change)="onCategoryChanged()">
         <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
       </select>
     </div>
@@ -19,7 +19,7 @@
     <div class="col-9 bg-light card">
       <div class="card-body">
         <div>
-          <button class="btn btn-outline-primary" [routerLink]="['./create-document', selectedCategoryId]">
+          <button class="btn btn-outline-primary" [disabled]="categoryIsParent" [routerLink]="['./create-document', selectedCategoryId]">
             Создать документ
           </button>
         </div>

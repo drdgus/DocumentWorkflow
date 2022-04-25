@@ -15,34 +15,45 @@ namespace DocumentWorkflow.Core.DAL.Repositories
 
         public ICollection<DocumentCategory> GetCategories()
         {
-            return _dbContext.DocumentCategories
+            var categories =  _dbContext.DocumentCategories
                 .Include(c => c.DocumentType)
+                .Include(c => c.LogBook)
                 .ToList();
+
+            categories.ForEach(c => { c.CustomTemplateFileName ??= c.DocumentType.TemplateFileName; });
+            return categories;
         }
 
         public ICollection<DocumentCategory> GetCategories(int typeId)
         {
-            return _dbContext.DocumentCategories
+            var categories = _dbContext.DocumentCategories
                 .Include(c => c.DocumentType)
+                .Include(c => c.LogBook)
                 .Where(c => c.DocumentTypeId == typeId)
                 .ToList();
-        }
-    }
 
-    public class DocumentsRepository
-    {
-        private DbContext _dbContext;
-
-        public DocumentsRepository(DbContext db)
-        {
-            _dbContext = db;
+            categories.ForEach(c => { c.CustomTemplateFileName ??= c.DocumentType.TemplateFileName; });
+            return categories;
         }
 
-        public ICollection<Document> GetDocuments(int categoryId)
+        public void AddCategory(DocumentCategory category)
         {
-            return _dbContext.Documents
-                .Where(d => d.DocumentCategoryId == categoryId)
-                .ToList();
+            _dbContext.DocumentCategories.Add(new DocumentCategory
+            {
+                ParentId = category.ParentId,
+                Name = category.Name,
+                CustomTemplateFileName = category.CustomTemplateFileName,
+                DocumentTypeId = category.DocumentTypeId,
+                LogBookId = category.LogBookId,
+            });
+        }
+
+        public DocumentCategory GetCategory(int documentCategoryId)
+        {
+            return _dbContext.DocumentCategories
+                .Include(c => c.DocumentType)
+                .Include(c => c.LogBook)
+                .Single(c => c.Id == documentCategoryId);
         }
     }
 }

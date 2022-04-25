@@ -33,8 +33,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\admin\" />
     <Folder Include="ClientApp\src\app\shared\categories\" />
-    <Folder Include="Core\Models\" />
-    <Folder Include="Core\Services\" />
+    <Folder Include="Templates\" />
   </ItemGroup>
 
   <ItemGroup>

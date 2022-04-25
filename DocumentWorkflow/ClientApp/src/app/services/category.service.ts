@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Category } from '../models/Category';
+import { Category } from '../models/category';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -9,30 +9,24 @@ export class CategoryService {
 
   public guid: number;
 
-  public constructor()
+  public constructor(private http: HttpClient)
   {
     this.guid = Date.now();
   }
 
-  private categories!: Category[];
-  public getCategories(typeId: number): Category[]
+  public async getCategories(typeId: number): Promise<Category[]>
   {
-    const requestOptions: object = {
-      method: 'GET',
-      redirect: 'follow',
-    };
+    return await this.http.get<Category[]>(`/api/v1/Categories/${typeId}`).toPromise();
+  }
 
-    console.log("service: typeId = " + typeId);
+  public async getCategory(categoryId: number): Promise<Category>
+  {
+    return await this.http.get<Category[]>("/api/v1/Categories/")
+        .toPromise().then(f => f.find(c => c.id == categoryId) as Category);
+  }
 
-    fetch(`/api/v1/Categories/${typeId}`, (requestOptions) as any)
-      .then(text => text.json())
-      .then((responseCategories: Array<Category>) =>
-      {
-        this.categories = responseCategories;
-      });
-
-    console.log("service: categories = ");
-    console.log(this.categories);
-    return this.categories;
+  public async createCategory(category: Category): Promise<any>
+  {
+    return this.http.put("/api/v1/Categories/", category);
   }
 }

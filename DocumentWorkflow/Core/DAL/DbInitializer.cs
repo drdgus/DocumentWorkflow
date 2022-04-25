@@ -113,6 +113,7 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = 1,
                 Name = "Журнал регистрации справок",
+                LastDocumentNumber = 0,
                 NumberingResetDate = new DateTime(2022, 10, 1),
                 LastNumberingResetDate = default
             });
@@ -200,6 +201,8 @@ namespace DocumentWorkflow.Core.DAL
                 OldValue = "",
                 NewValue = ""
             }));
+
+            context.LogBooks.First().LastDocumentNumber = 100;
 
             context.SaveChanges();
         }

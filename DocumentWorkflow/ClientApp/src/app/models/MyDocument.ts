@@ -1,7 +1,7 @@
-export class MyDocument
+export interface MyDocument
 {
-  public id: number = 0;
-  public number: number = 0
-  public createdDate: Date = Date.prototype;
-  public name: string = '';
+  id: number ;
+  number: number;
+  createdDate: Date;
+  name: string;
 }
