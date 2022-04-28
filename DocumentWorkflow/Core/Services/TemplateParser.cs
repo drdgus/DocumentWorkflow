@@ -27,9 +27,19 @@ namespace DocumentWorkflow.Core.Services
                 new ("$Ученик_ФИО$", text, 3) { VisibleForUser = true},
                 new ("$Местоимение_на_основании_пола$", text, 4),
                 new ("$Ученик_класс$", text, 5) { VisibleForUser = true, IsDisabled = true},
-                new ("$Учебный_год$", number, 6) {VisibleForUser = true, IsDisabled = true},
-                new ("$Дата_окончания_уг$", number, 7) {VisibleForUser = true, IsDisabled = true},
+                new ("$Учебный_год$", number, 6, GetStartEducationYear()) {VisibleForUser = true, IsDisabled = true},
+                new ("$Дата_окончания_уг$", number, 7, GetEndEducationYear()) {VisibleForUser = true, IsDisabled = true},
             };
+        }
+
+        private string GetStartEducationYear()
+        {
+            return DateTime.Now.Month < 8 ? DateTime.Now.AddYears(-1).Year.ToString() : DateTime.Now.Year.ToString();
+        }
+
+        private string GetEndEducationYear()
+        {
+            return DateTime.Now.Month < 8 ? DateTime.Now.Year.ToString() : DateTime.Now.AddYears(1).Year.ToString();
         }
 
         private List<TemplateField> _replaceFields;

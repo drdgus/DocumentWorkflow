@@ -202,7 +202,7 @@ namespace DocumentWorkflow.Core.DAL
                 NewValue = ""
             }));
 
-            context.LogBooks.First().LastDocumentNumber = 100;
+            context.LogBooks.First(b => b.Id == 1).LastDocumentNumber = 100;
 
             context.SaveChanges();
         }
