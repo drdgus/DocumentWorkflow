@@ -34,12 +34,12 @@ namespace DocumentWorkflow.Core.Services
 
         private string GetStartEducationYear()
         {
-            return DateTime.Now.Month < 8 ? DateTime.Now.AddYears(-1).Year.ToString() : DateTime.Now.Year.ToString();
+            return DateTime.Now.Month < 9 ? DateTime.Now.AddYears(-1).Year.ToString() : DateTime.Now.Year.ToString();
         }
 
         private string GetEndEducationYear()
         {
-            return DateTime.Now.Month < 8 ? DateTime.Now.Year.ToString() : DateTime.Now.AddYears(1).Year.ToString();
+            return DateTime.Now.Month < 9 ? DateTime.Now.Year.ToString() : DateTime.Now.AddYears(1).Year.ToString();
         }
 
         private List<TemplateField> _replaceFields;
