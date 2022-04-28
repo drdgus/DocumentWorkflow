@@ -104,7 +104,7 @@ namespace DocumentWorkflow.Core.DAL
                 {
                     Id = 5,
                     Name = "Справки",
-                    TemplateFileName = "Справки.html"
+                    TemplateFileName = @"Templates\certificate.html"
                 },
             });
             context.SaveChanges();
@@ -183,7 +183,7 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 Number = (i % 10 == 0 ? i + 0.1f : i),
-                CreatedDate = DateTime.Now,
+                CreatedDate = DateTime.Now.AddHours(-1).AddSeconds(i),
                 Name = $"Название {i}",
                 Content = "Et aliquip lorem et eu et facilisi sed sit tempor amet ipsum vel amet justo eirmod sed ipsum sea rebum",
                 FileName = $"{i}.html",
@@ -196,7 +196,7 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 DocumentId = i,
-                ChangeDate = DateTime.Now,
+                ChangeDate = DateTime.Now.AddHours(-1).AddSeconds(i),
                 EditedField = "Создание",
                 OldValue = "",
                 NewValue = ""

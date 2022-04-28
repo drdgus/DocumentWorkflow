@@ -8,7 +8,7 @@ namespace DocumentWorkflow.Core.Services
     {
         private readonly CategoriesRepository _categoriesRepository;
         private readonly DocumentsRepository _documentsRepository;
-        private readonly string _documentsFolder = AppContext.BaseDirectory + @"/Documents/";
+        private readonly string _documentsFolder = AppContext.BaseDirectory + @"\Documents\";
 
         public DocumentCreator(CategoriesRepository categoriesRepository, DocumentsRepository documentsRepository)
         {
@@ -17,35 +17,37 @@ namespace DocumentWorkflow.Core.Services
             Directory.CreateDirectory(_documentsFolder);
         }
 
-        private void Fill(List<ReplaceField> fields, string templateFilename, string documentFilename)
+        private void Fill(List<ReplaceField> fields, string templateFilename, string folder, string documentFilename)
         {
-            File.Copy(templateFilename, documentFilename, true);
+            //TODO: Несколько ответственностей
+            Directory.CreateDirectory(folder);
+            File.Copy(templateFilename, @$"{folder}\{documentFilename}", true);
 
-            var file = File.ReadAllLines(documentFilename);
-            var newFile = new StringBuilder();
+            var file = File.ReadAllText(@$"{folder}\{documentFilename}");
 
-            foreach (var line in file)
+            fields.ForEach(f =>
             {
-                var newLine = string.Empty;
-                fields.ForEach(f =>
-                {
-                    newLine = line.Replace(f.Name, f.Value);
-                });
-                newFile.AppendLine(newLine);
-            }
+                file = file.Replace(f.Name, f.Value);
+            });
 
-            File.WriteAllText(documentFilename, newFile.ToString());
+            File.WriteAllText(@$"{folder}\{documentFilename}", file);
         }
 
         public void Create(NewDocument document)
         {
+            //TODO: Несколько ответственностей
             var category = _categoriesRepository.GetCategory(document.CategoryId);
             var template = category.CustomTemplateFileName ??= category.DocumentType.TemplateFileName;
 
-            var docFilename = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
-            Fill(document.Fields, template, docFilename);
+            var fileFolder = @"Documents\";
+            fileFolder += category.ParentCategory == null ? category.Name : @$"{category.ParentCategory.Name}\{category.Name}";
 
-            var content = "";
+            var docFilename = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
+            Fill(document.Fields, template, fileFolder, docFilename);
+
+            var content = string.Join(",", document.Fields.Select(x => x.Value));
+            
+            //TODO: заменить.
             var docName = docFilename;
 
             _documentsRepository.AddDocument(document.CategoryId, docFilename, content, docName);

@@ -6,7 +6,7 @@ namespace DocumentWorkflow.Core.DAL.Repositories
 {
     public class CategoriesRepository
     {
-        private DbContext _dbContext;
+        private readonly DbContext _dbContext;
 
         public CategoriesRepository(DbContext db)
         {

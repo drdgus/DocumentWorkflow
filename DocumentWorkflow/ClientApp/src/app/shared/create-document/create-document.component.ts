@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import {CategoryService} from "../../services/category.service";
 import { Category } from "../../models/category";
 import {DocumentService} from "../../services/document.service";
+import {TemplateField} from "../../models/templateField";
 
 
 @Component({
@@ -15,6 +16,7 @@ import {DocumentService} from "../../services/document.service";
 export class CreateDocumentComponent implements OnInit {
 
   public category!: Category;
+  public categoryFields!:TemplateField[];
 
   private selectedCategoryId!: number;
 
@@ -27,7 +29,6 @@ export class CreateDocumentComponent implements OnInit {
 
   public ngOnInit(): void {
     this.route.params.subscribe(params => {
-      console.log('The selectedCategoryId of this route is: ', params.selectedCategoryId);
       this.selectedCategoryId = params.selectedCategoryId;
     });
 
@@ -37,12 +38,19 @@ export class CreateDocumentComponent implements OnInit {
   }
 
   public createDocument(): void{
+    this.category.fields.concat(this.categoryFields);
     this.documentService.createDocument(this.category).then(d => alert("Документ создан!"));
     this.router.navigate(["/"]);
   }
 
   private setCategory(): void{
-    this.categoryService.getCategory(this.selectedCategoryId).then(category => this.category = category);
+    this.categoryService.getCategory(this.selectedCategoryId).then(category => {
+      category.fields = category.fields.sort((a, b) => {
+        return a.order - b.order;
+      })
+      this.category = category;
+      this.categoryFields = category.fields.filter(f => f.visibleForUser);
+    });
   }
 
   private transformDate(date: any) {

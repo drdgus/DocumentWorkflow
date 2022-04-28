@@ -1,45 +1,54 @@
 ﻿using System.Linq;
+using DocumentWorkflow.Core.Extensions;
+using static DocumentWorkflow.Core.Services.TemplateField.InputTypes;
 
 namespace DocumentWorkflow.Core.Services
 {
     public class TemplateParser
     {
-        public TemplateParser()
+        private readonly OrgSettings _settings;
+
+        public TemplateParser(OrgSettings settings)
         {
-            
+            _settings = settings;
+
+            _replaceFields = new List<TemplateField>
+            {
+                new ("$Полное_наименование_организации_в_родительном_падеже$", text, 0, _settings.FullNameGenitiveCase),
+                new ("$Полное_наименование_организации$", text, 0, _settings.FullName),
+                new ("$ИНН$", text, 0, _settings.INN),
+                new ("$КПП$", text, 0, _settings.KPP),
+                new ("$Адрес$", text, 0, _settings.Address),
+                new ("$Телефон$", text, 0, _settings.Phone),
+                new ("$Адрес_эп$", text, 0, _settings.Email),
+                new ("$День$", number, 0, DateTime.Now.Day.ToString()),
+                new ("$Месяц_прописью$", text, 0, DateTime.Now.ToMonthGenitiveCaseName()),
+                new ("$Год$", number, 0, DateTime.Now.Year.ToString()),
+                new ("$Ученик_ФИО$", text, 3) { VisibleForUser = true},
+                new ("$Местоимение_на_основании_пола$", text, 4),
+                new ("$Ученик_класс$", text, 5) { VisibleForUser = true, IsDisabled = true},
+                new ("$Учебный_год$", number, 6) {VisibleForUser = true, IsDisabled = true},
+                new ("$Дата_окончания_уг$", number, 7) {VisibleForUser = true, IsDisabled = true},
+            };
         }
 
-        private List<TemplateField> _replaceFields = new List<TemplateField>
-        {
-            new() { Name = "$Полное_наименование_организации$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$ИНН$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$КПП$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Адрес$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Телефон$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Адрес_эп$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Номер_документа$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$День$", Type = TemplateField.InputTypes.number},
-            new () { Name = "$Месяц_прописью$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Год$", Type = TemplateField.InputTypes.number},
-            new () { Name = "$Ученик_ФИО$", Type = TemplateField.InputTypes.text, VisibleForUser = true},
-            new () { Name = "$Местоимение_на_основании_пола$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Учебный_год$", Type = TemplateField.InputTypes.number},
-            new () { Name = "$Ученик_класс$", Type = TemplateField.InputTypes.text},
-            new () { Name = "$Дата_окончания_уг$", Type = TemplateField.InputTypes.number},
-            new () { Name = "$Полное_наименование_организации_в_родительном_падеже$", Type = TemplateField.InputTypes.text},
-        };
+        private List<TemplateField> _replaceFields;
 
         public List<TemplateField> GetFields(string filename)
         {
             var fields = new List<TemplateField>();
 
+            if (string.IsNullOrWhiteSpace(filename)) return fields;
+
+            //TODO: Убрать когда появятся все шаблоны
             if (filename.Contains("certificate.html") == false) return fields;
+            //
 
             var file = File.ReadAllLines(filename);
 
             foreach (var line in file)
             {
-                fields.AddRange(_replaceFields.Where(replaceField => replaceField.VisibleForUser && line.Contains(replaceField.Name)));
+                fields.AddRange(_replaceFields.Where(replaceField => line.Contains(replaceField.Name)));
             }
 
             return fields;

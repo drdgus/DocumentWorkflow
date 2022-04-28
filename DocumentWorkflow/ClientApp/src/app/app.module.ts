@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -10,7 +10,10 @@ import { HomeComponent } from './shared/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateDocumentComponent } from './shared/create-document/create-document.component';
 
-import { DatePipe } from '@angular/common'
+import {DatePipe, registerLocaleData} from '@angular/common'
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
@@ -28,9 +31,9 @@ import { DatePipe } from '@angular/common'
       { path: 'create-document/:selectedCategoryId', component: CreateDocumentComponent}
     ]),
     BrowserAnimationsModule,
-    
+
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

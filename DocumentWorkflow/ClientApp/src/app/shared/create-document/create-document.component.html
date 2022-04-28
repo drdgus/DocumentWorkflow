@@ -9,7 +9,7 @@
   </div>
   <div class="col-9 card">
     <div class="card-body">
-      <div class="form-floating mb-1" *ngFor="let field of category.fields">
+      <div class="form-floating mb-1" *ngFor="let field of categoryFields">
         <input type="{{field.type}}" class="form-control" id="{{field.name}}" [disabled]="field.isDisabled" placeholder="{{field.nameForUser}}" [(ngModel)]="field.value">
         <label for="{{field.name}}">{{field.nameForUser}}</label>
       </div>

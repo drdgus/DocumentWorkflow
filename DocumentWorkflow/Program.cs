@@ -16,6 +16,8 @@ builder.Services.AddDbContext<DbContext>(options =>
 builder.Services.AddTransient<CategoriesRepository>();
 builder.Services.AddTransient<TypesRepository>();
 builder.Services.AddTransient<DocumentsRepository>();
+builder.Services.AddSingleton<OrgSettings>();
+builder.Services.AddTransient<TemplateParser>();
 builder.Services.AddTransient<DocumentCreator>();
 
 //builder.WebHost.ConfigureKestrel(options =>
@@ -40,6 +42,18 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<DbContext>();
     context.Database.EnsureCreated();
     DbInitializer.Initialize(context);
+
+    var orgSettings = services.GetRequiredService<OrgSettings>();
+    if (orgSettings.FullName == null)
+    {
+        orgSettings.FullName = "Муниципальное казённое общеобразовательное учреждение Таежниниская школа № 20";
+        orgSettings.FullNameGenitiveCase = "Муниципальным казённым общеобразовательным учреждением Таежниниская школа № 20";
+        orgSettings.Address = "663467, Красноярский край, Богучанский район, п. Таежный, ул. Новая, 15";
+        orgSettings.Phone = "8 (39162) 26-606";
+        orgSettings.Email = "tsosh20@mail.ru";
+        orgSettings.INN = "2407063008";
+        orgSettings.KPP = "240701001";
+    }
 }
 
 app.UseHttpsRedirection();

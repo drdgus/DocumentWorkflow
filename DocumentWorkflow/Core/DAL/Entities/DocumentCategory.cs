@@ -11,6 +11,7 @@
         public int DocumentTypeId { get; set; }
         public int LogBookId { get; set; }
 
+        public virtual DocumentCategory? ParentCategory { get; set; }
         public virtual DocumentType DocumentType { get; set; }
         public virtual LogBook LogBook { get; set; }
     }

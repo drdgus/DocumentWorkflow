@@ -10,10 +10,12 @@ namespace DocumentWorkflow.Controllers.Api.v1
     public class CategoriesController : ControllerBase
     {
         private readonly CategoriesRepository _categoriesRepository;
+        private readonly TemplateParser _templateParser;
 
-        public CategoriesController(CategoriesRepository categoriesRepository)
+        public CategoriesController(CategoriesRepository categoriesRepository, TemplateParser templateParser)
         {
             _categoriesRepository = categoriesRepository;
+            _templateParser = templateParser;
         }
 
         [HttpGet("{id}")]
@@ -32,7 +34,7 @@ namespace DocumentWorkflow.Controllers.Api.v1
                 },
                 LogBookId = i.LogBookId,
                 LogBook = i.LogBook,
-                Fields = getFields(i)
+                Fields = GetFields(i)
             });
 
             return Ok(categories);
@@ -40,51 +42,60 @@ namespace DocumentWorkflow.Controllers.Api.v1
 
         public ActionResult Get()
         {
-            var categories = _categoriesRepository.GetCategories().Select(i => new
+            var categories = _categoriesRepository.GetCategories().Select(category => new
             {
-                Id = i.Id,
-                Name = i.Name,
-                ParentId = i.ParentId,
-                DocumentTypeId = i.DocumentTypeId,
+                Id = category.Id,
+                Name = category.Name,
+                ParentId = category.ParentId,
+                DocumentTypeId = category.DocumentTypeId,
                 DocumentType = new
                 {
-                    Id = i.DocumentType.Id,
-                    Name = i.DocumentType.Name
+                    Id = category.DocumentType.Id,
+                    Name = category.DocumentType.Name
                 },
-                LogBookId = i.LogBookId,
-                LogBook = i.LogBook,
-                Fields = getFields(i)
+                LogBookId = category.LogBookId,
+                LogBook = category.LogBook,
+                Fields = GetFields(category)
             });
 
             return Ok(categories);
         }
-        private object getFields(DocumentCategory category)
+
+        private object GetFields(DocumentCategory category)
         {
 
-            var fields = new TemplateParser().GetFields(category.CustomTemplateFileName).Select(f => new
+            var fields = _templateParser.GetFields(category.CustomTemplateFileName).Select(field => new
             {
-                Name = f.Name,
-                NameForUser = f.NameForUser,
-                Type = f.Type.ToString(),
-                IsDisabled = f.IsDisabled,
-                Value = f.Value
+                Name = field.Name,
+                NameForUser = field.NameForUser,
+                VisibleForUser = field.VisibleForUser,
+                Type = field.Type.ToString(),
+                IsDisabled = field.IsDisabled,
+                Value = field.Value,
+                Order = field.Order
             }).ToList();
 
+
+            //TODO: надо в 1 месте формировать все поля.
             fields.Insert(0, new
             {
                 Name = "$Номер_документа$",
                 NameForUser = "Номер документа",
+                VisibleForUser = true,
                 Type = "number",
                 IsDisabled = true,
-                Value = (category.LogBook.LastDocumentNumber + 1).ToString()
+                Value = (category.LogBook.LastDocumentNumber + 1).ToString(),
+                Order = 1
             });
             fields.Insert(1, new
             {
                 Name = "$Дата_создания$",
                 NameForUser = "Дата создания",
+                VisibleForUser = true,
                 Type = "datetime",
                 IsDisabled = true,
-                Value = DateTime.Now.ToString()
+                Value = DateTime.Now.ToString(),
+                Order = 2
             });
 
             return fields;

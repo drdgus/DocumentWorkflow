@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
 
   public onTypeChanged(): any
   {
-    console.log(`TypeChanged id = ${this.selectedTypeId}`);
     this.categories = [];
     this.documents = [];
     this.selectedCategoryId = 0;
@@ -42,7 +41,6 @@ export class HomeComponent implements OnInit {
   }
 
   public onCategoryChanged(): any {
-    console.log(`CategoryChanged id = ${this.selectedCategoryId}`);
     this.documents = [];
     this.categoryIsParent = (this.categories.find(c => c.id == this.selectedCategoryId) as Category).parentId == null;
     this.setDocuments();
@@ -64,7 +62,6 @@ export class HomeComponent implements OnInit {
 
   private setCategories(): void
   {
-    console.log(`categoryService guid = ${this.categoryService.guid} called from homeComponent/setCategories()`);
     this.categoryService.getCategories(this.selectedTypeId).then(v => this.categories = v);
     this.cdr.detectChanges();
   }

@@ -36,7 +36,7 @@
           <tr *ngFor="let document of documents">
             <td>{{document.number.toString().replace(".", " / ")}}</td>
             <td>{{document.name}}</td>
-            <td>{{document.createdDate}}</td>
+            <td>{{document.createdDate | date:"MMM d, y, HH:mm:ss"}}</td>
           </tr>
           </tbody>
         </table>
