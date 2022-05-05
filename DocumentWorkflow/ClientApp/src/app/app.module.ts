@@ -12,6 +12,7 @@ import { CreateDocumentComponent } from './shared/create-document/create-documen
 
 import {DatePipe, registerLocaleData} from '@angular/common'
 import localeRu from '@angular/common/locales/ru';
+import {MatSelectModule} from "@angular/material/select";
 
 registerLocaleData(localeRu);
 
@@ -22,17 +23,18 @@ registerLocaleData(localeRu);
     HomeComponent,
     CreateDocumentComponent,
   ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'create-document/:selectedCategoryId', component: CreateDocumentComponent}
-    ]),
-    BrowserAnimationsModule,
+    imports: [
+        BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+        HttpClientModule,
+        FormsModule,
+        RouterModule.forRoot([
+            {path: '', component: HomeComponent, pathMatch: 'full'},
+            {path: 'create-document/:selectedCategoryId', component: CreateDocumentComponent}
+        ]),
+        BrowserAnimationsModule,
+        MatSelectModule,
 
-  ],
+    ],
   providers: [DatePipe, { provide: LOCALE_ID, useValue: 'ru' }],
   bootstrap: [AppComponent]
 })

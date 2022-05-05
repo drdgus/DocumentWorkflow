@@ -14,21 +14,24 @@ namespace DocumentWorkflow.Core.Services
 
             _replaceFields = new List<TemplateField>
             {
-                new ("$Полное_наименование_организации_в_родительном_падеже$", text, 0, _settings.FullNameGenitiveCase),
-                new ("$Полное_наименование_организации$", text, 0, _settings.FullName),
-                new ("$ИНН$", text, 0, _settings.INN),
-                new ("$КПП$", text, 0, _settings.KPP),
-                new ("$Адрес$", text, 0, _settings.Address),
-                new ("$Телефон$", text, 0, _settings.Phone),
-                new ("$Адрес_эп$", text, 0, _settings.Email),
-                new ("$День$", number, 0, DateTime.Now.Day.ToString()),
-                new ("$Месяц_прописью$", text, 0, DateTime.Now.ToMonthGenitiveCaseName()),
-                new ("$Год$", number, 0, DateTime.Now.Year.ToString()),
-                new ("$Ученик_ФИО$", text, 3) { VisibleForUser = true},
-                new ("$Местоимение_на_основании_пола$", text, 4),
-                new ("$Ученик_класс$", text, 5) { VisibleForUser = true, IsDisabled = true},
-                new ("$Учебный_год$", number, 6, GetStartEducationYear()) {VisibleForUser = true, IsDisabled = true},
-                new ("$Дата_окончания_уг$", number, 7, GetEndEducationYear()) {VisibleForUser = true, IsDisabled = true},
+                new ("$Полное_наименование_организации_в_родительном_падеже$", Text, 0, _settings.FullNameGenitiveCase),
+                new ("$Полное_наименование_организации$", Text, 0, _settings.FullName),
+                new ("$ИНН$", Text, 0, _settings.INN),
+                new ("$КПП$", Text, 0, _settings.KPP),
+                new ("$Адрес$", Text, 0, _settings.Address),
+                new ("$Телефон$", Text, 0, _settings.Phone),
+                new ("$Адрес_эп$", Text, 0, _settings.Email),
+                new ("$День$", Number, 0, DateTime.Now.Day.ToString()),
+                new ("$Месяц_прописью$", Text, 0, DateTime.Now.ToMonthGenitiveCaseName()),
+                new ("$Год$", Number, 0, DateTime.Now.Year.ToString()),
+                new ("$Ученик_ФИО$", Text, 3) { VisibleForUser = true, RequiredElements = new []
+                {
+                    TemplateField.Element.Students
+                }},
+                new ("$Местоимение_на_основании_пола$", Text, 4),
+                new ("$Ученик_класс$", Text, 5) { VisibleForUser = true, IsDisabled = true},
+                new ("$Учебный_год$", Number, 6, GetStartEducationYear()) {VisibleForUser = true, IsDisabled = true},
+                new ("$Дата_окончания_уг$", Number, 7, GetEndEducationYear()) {VisibleForUser = true, IsDisabled = true},
             };
         }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Category } from '../models/category';
 import { HttpClient } from '@angular/common/http';
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,17 @@ export class CategoryService {
     this.guid = Date.now();
   }
 
-  public async getCategories(typeId: number): Promise<Category[]>
+  public getCategories(typeId: number)
   {
-    return await this.http.get<Category[]>(`/api/v1/Categories/${typeId}`).toPromise();
+    return this.http.get<Category[]>(`/api/v1/Categories/${typeId}`);
   }
 
-  public async getCategory(categoryId: number): Promise<Category>
+  public getCategory(categoryId: number)
   {
-    return await this.http.get<Category[]>("/api/v1/Categories/")
-        .toPromise().then(f => f.find(c => c.id == categoryId) as Category);
+    return this.http.get<Category[]>("/api/v1/Categories/")
+      .pipe(
+        map(value => value.find( c => c.id == categoryId))
+      );
   }
 
   public async createCategory(category: Category): Promise<any>

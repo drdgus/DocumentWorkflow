@@ -24,7 +24,7 @@ namespace DocumentWorkflow.Core.DAL.Repositories
             return categories;
         }
 
-        public ICollection<DocumentCategory> GetCategories(int typeId)
+        public ICollection<DocumentCategory> GetCategoriesByType(int typeId)
         {
             var categories = _dbContext.DocumentCategories
                 .Include(c => c.DocumentType)

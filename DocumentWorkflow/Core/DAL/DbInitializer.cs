@@ -138,15 +138,17 @@ namespace DocumentWorkflow.Core.DAL
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
                     LogBookId = 1,
+                    RequiredModule = RequiredModule.Students
                 },
                 new DocumentCategory
                 {
                     Id = 3,
                     ParentId = 1,
-                    Name = "Крутая справка",
+                    Name = "Справка для работника",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
                     LogBookId = 1,
+                    RequiredModule = RequiredModule.Employees
                 }
             });
             context.SaveChanges();
@@ -175,7 +177,7 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 FullName = $"Работник № {i}",
-                BirthDay = new DateTime(rnd.Next(1960, 2003), rnd.Next(1, 12), rnd.Next(1, 30)),
+                BirthDay = new DateTime(rnd.Next(1960, 2003), rnd.Next(1, 12), rnd.Next(1, 28)),
                 Position = $"Должность {rnd.Next(1, 20)}"
             }));
 

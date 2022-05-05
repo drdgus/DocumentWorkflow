@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
 
   private setCategories(): void
   {
-    this.categoryService.getCategories(this.selectedTypeId).then(v => this.categories = v);
+    this.categoryService.getCategories(this.selectedTypeId).subscribe(v => this.categories = v);
     this.cdr.detectChanges();
   }
 

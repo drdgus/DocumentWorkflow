@@ -8,6 +8,18 @@
     </div>
   </div>
   <div class="col-9 card">
+    <div class="col-3">
+      <mat-form-field>
+        <mat-select [disabled]="disableSelect.value" (selectionChange)="classChanged($event.value)">
+          <mat-option *ngFor="let class of classes" value="{{class}}">{{class}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+     <mat-form-field>
+       <mat-select [disabled]="disableSelect.value">
+         <mat-option *ngFor="let student of students" value="{{student.id}}">{{student.fullName}}</mat-option>
+       </mat-select>
+     </mat-form-field>
+    </div>
     <div class="card-body">
       <div class="form-floating mb-1" *ngFor="let field of categoryFields">
         <input type="{{field.type}}" class="form-control" id="{{field.name}}" [disabled]="field.isDisabled" placeholder="{{field.nameForUser}}" [(ngModel)]="field.value">

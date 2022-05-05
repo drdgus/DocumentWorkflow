@@ -5,10 +5,11 @@ public class TemplateField
     public string Name { get; }
     public string NameForUser => NormalizeName();
     public InputTypes Type { get; }
+    public int Order { get; }
+    public string Value { get; set; }
     public bool IsDisabled { get; set; }
     public bool VisibleForUser { get; set; }
-    public string Value { get; set; }
-    public int Order { get; }
+    public IEnumerable<Element> RequiredElements { get; set; } = new List<Element>();
 
     public TemplateField(string name, InputTypes type, int order, string value = "")
     {
@@ -20,9 +21,15 @@ public class TemplateField
 
     public enum InputTypes
     {
-        text,
-        number,
-        datetime,
+        Text,
+        Number,
+        Datetime,
+    }
+
+    public enum Element
+    {
+        Students,
+        Employees
     }
 
     private string NormalizeName()

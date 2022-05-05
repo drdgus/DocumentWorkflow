@@ -16,7 +16,10 @@ builder.Services.AddDbContext<DbContext>(options =>
 builder.Services.AddTransient<CategoriesRepository>();
 builder.Services.AddTransient<TypesRepository>();
 builder.Services.AddTransient<DocumentsRepository>();
+builder.Services.AddTransient<StudentsRepository>();
+
 builder.Services.AddSingleton<OrgSettings>();
+
 builder.Services.AddTransient<TemplateParser>();
 builder.Services.AddTransient<DocumentCreator>();
 

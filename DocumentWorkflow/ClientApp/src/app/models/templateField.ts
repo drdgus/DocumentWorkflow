@@ -1,3 +1,5 @@
+import {RequiredElements} from "./requiredElements";
+
 export interface TemplateField
 {
   name: string;
@@ -7,4 +9,6 @@ export interface TemplateField
   value: string;
   order: number;
   isDisabled: boolean;
+  requiredElements: RequiredElements[]
 }
+

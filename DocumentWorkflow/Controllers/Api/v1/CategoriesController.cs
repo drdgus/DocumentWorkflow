@@ -1,4 +1,5 @@
-﻿using DocumentWorkflow.Core.DAL.Entities;
+﻿using System.Collections;
+using DocumentWorkflow.Core.DAL.Entities;
 using DocumentWorkflow.Core.DAL.Repositories;
 using DocumentWorkflow.Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,20 +22,21 @@ namespace DocumentWorkflow.Controllers.Api.v1
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var categories = _categoriesRepository.GetCategories(id).Select(i => new
+            var categories = _categoriesRepository.GetCategoriesByType(id).Select(category => new
             {
-                Id = i.Id,
-                Name = i.Name,
-                ParentId = i.ParentId,
-                DocumentTypeId = i.DocumentTypeId,
+                Id = category.Id,
+                Name = category.Name,
+                ParentId = category.ParentId,
+                DocumentTypeId = category.DocumentTypeId,
                 DocumentType = new
                 {
-                    Id = i.DocumentType.Id,
-                    Name = i.DocumentType.Name
+                    Id = category.DocumentType.Id,
+                    Name = category.DocumentType.Name
                 },
-                LogBookId = i.LogBookId,
-                LogBook = i.LogBook,
-                Fields = GetFields(i)
+                LogBookId = category.LogBookId,
+                LogBook = category.LogBook,
+                Fields = GetFields(category),
+                RequiredModule = category.RequiredModule
             });
 
             return Ok(categories);
@@ -55,7 +57,8 @@ namespace DocumentWorkflow.Controllers.Api.v1
                 },
                 LogBookId = category.LogBookId,
                 LogBook = category.LogBook,
-                Fields = GetFields(category)
+                Fields = GetFields(category),
+                RequiredModule = category.RequiredModule
             });
 
             return Ok(categories);
@@ -72,7 +75,8 @@ namespace DocumentWorkflow.Controllers.Api.v1
                 Type = field.Type.ToString(),
                 IsDisabled = field.IsDisabled,
                 Value = field.Value,
-                Order = field.Order
+                Order = field.Order,
+                RequiredElements = field.RequiredElements.ToList()
             }).ToList();
 
 
@@ -85,7 +89,8 @@ namespace DocumentWorkflow.Controllers.Api.v1
                 Type = "number",
                 IsDisabled = true,
                 Value = (category.LogBook.LastDocumentNumber + 1).ToString(),
-                Order = 1
+                Order = 1,
+                RequiredElements = new List<TemplateField.Element>().ToList()
             });
             fields.Insert(1, new
             {
@@ -95,7 +100,8 @@ namespace DocumentWorkflow.Controllers.Api.v1
                 Type = "datetime",
                 IsDisabled = true,
                 Value = DateTime.Now.ToString(),
-                Order = 2
+                Order = 2,
+                RequiredElements = new List<TemplateField.Element>().ToList()
             });
 
             return fields;
@@ -109,5 +115,17 @@ namespace DocumentWorkflow.Controllers.Api.v1
 
             return Ok();
         }
+    }
+
+    public interface ICategoryFields
+    {
+        public string Name { get; set; }
+        public string NameForUser { get; set; }
+        public bool VisibleForUser { get; set; }
+        public string Type { get; set; }
+        public bool IsDisabled { get; set; }
+        public string Value { get; set; }
+        public int Order { get; set; }
+        public List<TemplateField.Element> RequiredElements { get; set; }
     }
 }

@@ -13,5 +13,10 @@
             Male,
             Female
         }
+
+        public string GenderToString()
+        {
+            return Gender == Genders.Male ? "М" : "Ж";
+        }
     }
 }

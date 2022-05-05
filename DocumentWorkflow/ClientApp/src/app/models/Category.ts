@@ -1,5 +1,6 @@
 import {LogBook} from "./logBook";
 import {TemplateField} from "./templateField";
+import {RequiredModule} from "./requiredModule";
 
 export interface Category {
   id:number;
@@ -11,4 +12,6 @@ export interface Category {
   documentType: DocumentType;
   logBook: LogBook;
   fields: TemplateField[];
+  requiredModule: RequiredModule;
 }
+
