@@ -1,25 +1,70 @@
 <div class="row">
   <div class="col-3">
     <div class="card bg-success">
-      <span class="card-body text-white">Категория: {{category.name}}</span>
+      <span class="card-body text-white">Категория: {{category.name || ""}}</span>
     </div>
     <div class="card bg-success mt-2">
       <span class="card-body text-white">Журнал: {{category.logBook.name}}</span>
     </div>
+    <div class="card bg-light mt-2">
+      <style>
+        table {
+          width: 100%;
+        }
+
+        .mat-form-field {
+          font-size: 14px;
+          width: 100%;
+        }
+      </style>
+      <mat-form-field appearance="standard">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+      </mat-form-field>
+
+      <style>
+        .row-is-clicked {
+          font-weight: bold;
+        }
+        .mat-row .mat-cell {
+          border-bottom: 1px solid transparent;
+          border-top: 1px solid transparent;
+          cursor: pointer;
+        }
+
+        .mat-row:hover .mat-cell {
+          border-color: currentColor;
+        }
+      </style>
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ФИО </th>
+          <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="class">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Класс </th>
+          <td mat-cell *matCellDef="let element"> {{element.class}} </td>
+        </ng-container>
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Пол </th>
+          <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          (click)="onStudentSelected(row)"
+          [class.row-is-clicked]="selectedRow.id == row.id"
+          *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+    </div>
   </div>
   <div class="col-9 card">
-    <div class="col-3">
-      <mat-form-field>
-        <mat-select [disabled]="disableSelect.value" (selectionChange)="classChanged($event.value)">
-          <mat-option *ngFor="let class of classes" value="{{class}}">{{class}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-     <mat-form-field>
-       <mat-select [disabled]="disableSelect.value">
-         <mat-option *ngFor="let student of students" value="{{student.id}}">{{student.fullName}}</mat-option>
-       </mat-select>
-     </mat-form-field>
-    </div>
     <div class="card-body">
       <div class="form-floating mb-1" *ngFor="let field of categoryFields">
         <input type="{{field.type}}" class="form-control" id="{{field.name}}" [disabled]="field.isDisabled" placeholder="{{field.nameForUser}}" [(ngModel)]="field.value">

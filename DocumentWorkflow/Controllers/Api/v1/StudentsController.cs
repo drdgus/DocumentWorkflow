@@ -19,6 +19,7 @@ namespace DocumentWorkflow.Controllers.Api.v1
         {
             var students = _studentsRepository.GetStudents().Select(x => new
             {
+                Id = x.Id,
                 FullName = x.FullName,
                 Birthday = x.BirthDay,
                 Class = x.Class,

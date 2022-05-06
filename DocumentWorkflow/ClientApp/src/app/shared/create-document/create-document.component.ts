@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router'
 import {CategoryService} from "../../services/category.service";
@@ -8,8 +8,8 @@ import {StudentsService} from "../../services/students.service";
 import {TemplateField} from "../../models/templateField";
 import {RequiredModule} from "../../models/requiredModule";
 import {Student} from "../../models/student";
-import {FormControl} from "@angular/forms";
-import {ArrayExtensions} from "../../extensions/ArrayExtensions";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatSort} from "@angular/material/sort";
 
 
 @Component({
@@ -17,15 +17,16 @@ import {ArrayExtensions} from "../../extensions/ArrayExtensions";
   templateUrl: './create-document.component.html',
   styleUrls: ['./create-document.component.css']
 })
-export class CreateDocumentComponent implements OnInit {
+export class CreateDocumentComponent implements OnInit, AfterViewInit  {
 
   public category!: Category;
   public categoryFields!: TemplateField[];
 
-  public classes!: string[];
-  public students!: Student[];
   public allStudents!: Student[];
-  public disableSelect = new FormControl(false);
+
+  public displayedColumns: string[] = ['fullName', 'class', 'gender'];
+  public dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
+  public selectedRow: Student = new Student();
 
   private selectedCategoryId!: number;
 
@@ -35,8 +36,7 @@ export class CreateDocumentComponent implements OnInit {
     private route: ActivatedRoute,
     private categoryService: CategoryService,
     private documentService: DocumentService,
-    private studentsService: StudentsService) {
-  }
+    private studentsService: StudentsService){}
 
   public ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -46,14 +46,26 @@ export class CreateDocumentComponent implements OnInit {
     this.setCategory();
   }
 
+  @ViewChild(MatSort) sort!: MatSort;
+
+  public ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+
   public createDocument(): void {
     this.category.fields.concat(this.categoryFields);
     this.documentService.createDocument(this.category).then(d => alert("Документ создан!"));
     this.router.navigate(["/"]);
   }
 
-  public classChanged(studentClass: string): void {
-    this.students = this.allStudents.filter(s => s.class == studentClass);
+  public onStudentSelected(student: Student): void{
+    this.selectedRow = student;
+    console.log(`selected student ${student.fullName}`);
+    console.log(student);
+
+    this.categoryFields.find(i => i.name == "$Ученик_ФИО$")!.value = student.fullName;
+
+    this.category.fields.find(i => i.name == "$Местоимение_на_основании_пола$")!.value = student.gender;
   }
 
   private setCategory(): void {
@@ -82,30 +94,16 @@ export class CreateDocumentComponent implements OnInit {
   private setStudentsModule(): void {
     this.studentsService.getStudents().subscribe(students => {
       this.allStudents = students;
-      //console.log(JSON.stringify(this.groupBy(students, "studentClass")));
-      //this.groupBy(students, k => k.studentClass).forEach(x => this.classes.push(x));
-      //this.students = ArrayExtensions.groupBy(this.allStudents, k => k.class);
+      console.log(this.allStudents);
+      this.dataSource = new MatTableDataSource(this.allStudents);
 
-      var group = ArrayExtensions.groupBy(this.allStudents, k => k.class);
-      this.classes = this.keys(group).sort(
-        (n1,n2) => {
-          if (n1 > n2) {
-            return 1;
-          }
-
-          if (n1 < n2) {
-            return -1;
-          }
-
-          return 0;
-        }
-      );
     });
   }
 
-  private keys<T>(object: T) {
-    return Object.keys(object) as (keyof T)[];
-  };
+  public applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   private setEmployeesModule(): void {
 
