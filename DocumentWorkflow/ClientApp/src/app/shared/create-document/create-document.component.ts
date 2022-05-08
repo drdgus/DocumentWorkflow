@@ -18,6 +18,7 @@ import {MatSort} from "@angular/material/sort";
   styleUrls: ['./create-document.component.css']
 })
 export class CreateDocumentComponent implements OnInit, AfterViewInit  {
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   public category!: Category;
   public categoryFields!: TemplateField[];
@@ -42,14 +43,11 @@ export class CreateDocumentComponent implements OnInit, AfterViewInit  {
     this.route.params.subscribe(params => {
       this.selectedCategoryId = params.selectedCategoryId;
     });
-
     this.setCategory();
   }
 
-  @ViewChild(MatSort) sort!: MatSort;
-
   public ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    //this.dataSource.sort = this.sort;
   }
 
   public createDocument(): void {
@@ -96,7 +94,7 @@ export class CreateDocumentComponent implements OnInit, AfterViewInit  {
       this.allStudents = students;
       console.log(this.allStudents);
       this.dataSource = new MatTableDataSource(this.allStudents);
-
+      this.dataSource.sort = this.sort;
     });
   }
 

@@ -168,8 +168,8 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 FullName = $"Ученик №{i}",
-                BirthDay = new DateTime(2015, rnd.Next(1, 12), rnd.Next(1, 28)),
-                Class = rnd.Next(1, 11) + (i % 3 == 0 ? "А" : "Б"),
+                BirthDay = new DateTime(2015, rnd.Next(1, 13), rnd.Next(1, 29)),
+                Class = rnd.Next(1, 12) + (i % 3 == 0 ? "А" : "Б"),
                 Gender = i % 2 == 0 ? Student.Genders.Male : Student.Genders.Female
             }));
 
@@ -177,8 +177,8 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 FullName = $"Работник № {i}",
-                BirthDay = new DateTime(rnd.Next(1960, 2003), rnd.Next(1, 12), rnd.Next(1, 28)),
-                Position = $"Должность {rnd.Next(1, 20)}"
+                BirthDay = new DateTime(rnd.Next(1960, 2004), rnd.Next(1, 13), rnd.Next(1, 29)),
+                Position = $"Должность {rnd.Next(1, 21)}"
             }));
 
             context.Documents.AddRange(Enumerable.Range(1, 100).Select(i => new Document
@@ -190,7 +190,7 @@ namespace DocumentWorkflow.Core.DAL
                 Content = "Et aliquip lorem et eu et facilisi sed sit tempor amet ipsum vel amet justo eirmod sed ipsum sea rebum",
                 FileName = $"{i}.html",
                 UserId = 1,
-                DocumentCategoryId = rnd.Next(2,3)
+                DocumentCategoryId = rnd.Next(2,4)
             }));
             context.SaveChanges();
 

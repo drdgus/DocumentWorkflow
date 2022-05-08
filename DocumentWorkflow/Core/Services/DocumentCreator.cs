@@ -27,15 +27,15 @@ namespace DocumentWorkflow.Core.Services
             var fileFolder = @"Documents\";
             fileFolder += category.ParentCategoryId == null ? @$"{category.Name}\" : @$"{category.ParentCategory.Name}\{category.Name}\";
 
-            var docFilename = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
-            Fill(document.Fields, template, fileFolder, docFilename);
+            var docName = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
+            Fill(document.Fields, template, fileFolder, docName);
 
             var content = string.Join(",", document.Fields.Select(x => x.Value));
             
             //TODO: заменить.
-            var docName = fileFolder + docFilename;
+            var docFileName = fileFolder + docName;
 
-            _documentsRepository.AddDocument(document.CategoryId, docName, content, docName);
+            _documentsRepository.AddDocument(document.CategoryId, docFileName, content, docName);
         }
 
         private void Fill(List<ReplaceField> fields, string templateFilename, string folder, string documentFilename)
