@@ -32,6 +32,20 @@ public class DocumentsController : ControllerBase
         return Ok(documents);
     }
 
+    [HttpGet("documentId={id}")]
+    public ActionResult GetDocumentFile(int id)
+    {
+        var document = _documentsRepository.GetDocumentForPrint(id);
+
+        var file = System.IO.File.ReadAllText(document.FileName);
+
+        var res = new
+        {
+            html = file
+        };
+        return Ok(res);
+    }
+
     [HttpPut]
     public ActionResult Put([FromBody] NewDocument document)
     {

@@ -26,7 +26,7 @@ namespace DocumentWorkflow.Controllers.Api.v1
             {
                 Id = category.Id,
                 Name = category.Name,
-                ParentId = category.ParentId,
+                ParentId = category.ParentCategoryId,
                 DocumentTypeId = category.DocumentTypeId,
                 DocumentType = new
                 {
@@ -48,7 +48,7 @@ namespace DocumentWorkflow.Controllers.Api.v1
             {
                 Id = category.Id,
                 Name = category.Name,
-                ParentId = category.ParentId,
+                ParentId = category.ParentCategoryId,
                 DocumentTypeId = category.DocumentTypeId,
                 DocumentType = new
                 {

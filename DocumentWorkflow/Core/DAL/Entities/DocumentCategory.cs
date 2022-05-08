@@ -5,7 +5,7 @@
 
 
         public int Id { get; set; }
-        public int? ParentId { get; set; }
+        public int? ParentCategoryId { get; set; }
         public string Name { get; set; }
         public string? CustomTemplateFileName { get; set; }
         public int DocumentTypeId { get; set; }

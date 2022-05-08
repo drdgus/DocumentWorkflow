@@ -124,7 +124,7 @@ namespace DocumentWorkflow.Core.DAL
                 new DocumentCategory
                 {
                     Id = 1,
-                    ParentId = null,
+                    ParentCategoryId = null,
                     Name = "Все",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
@@ -133,7 +133,7 @@ namespace DocumentWorkflow.Core.DAL
                 new DocumentCategory
                 {
                     Id = 2,
-                    ParentId = 1,
+                    ParentCategoryId = 1,
                     Name = "Справка",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
@@ -143,7 +143,7 @@ namespace DocumentWorkflow.Core.DAL
                 new DocumentCategory
                 {
                     Id = 3,
-                    ParentId = 1,
+                    ParentCategoryId = 1,
                     Name = "Справка для работника",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,

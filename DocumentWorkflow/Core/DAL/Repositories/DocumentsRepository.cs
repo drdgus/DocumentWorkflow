@@ -19,6 +19,12 @@ public class DocumentsRepository
             .ToList();
     }
 
+    public Document GetDocumentForPrint(int documentId)
+    {
+        return _dbContext.Documents
+            .SingleOrDefault(d => d.Id == documentId);
+    }
+
     public void AddDocument(int categoryId, string filename, string content, string name)
     {
         var category =  _dbContext.DocumentCategories.Single(c => c.Id == categoryId);

@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-3">
     <div class="card bg-success">
-      <span class="card-body text-white">Категория: {{category.name || ""}}</span>
+      <span class="card-body text-white">Категория: {{category?.name }}</span>
     </div>
     <div class="card bg-success mt-2">
-      <span class="card-body text-white">Журнал: {{category.logBook.name}}</span>
+      <span class="card-body text-white">Журнал: {{category?.logBook?.name}}</span>
     </div>
     <div class="card bg-light mt-2">
       <style>

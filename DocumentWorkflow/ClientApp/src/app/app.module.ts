@@ -16,6 +16,8 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatTableModule} from "@angular/material/table";
 import {MatInputModule} from "@angular/material/input";
 import {MatSortModule} from "@angular/material/sort";
+import { PrintLayoutComponent } from './print-layout/print-layout.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 registerLocaleData(localeRu);
 
@@ -25,6 +27,8 @@ registerLocaleData(localeRu);
     NavMenuComponent,
     HomeComponent,
     CreateDocumentComponent,
+    PrintLayoutComponent,
+    InvoiceComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -32,7 +36,14 @@ registerLocaleData(localeRu);
     FormsModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'create-document/:selectedCategoryId', component: CreateDocumentComponent}
+      {path: 'create-document/:selectedCategoryId', component: CreateDocumentComponent},
+      { path: 'print',
+        outlet: 'print',
+        component: PrintLayoutComponent,
+        children: [
+          { path: 'invoice', component: InvoiceComponent }
+        ]
+      }
     ]),
     BrowserAnimationsModule,
     MatSelectModule,

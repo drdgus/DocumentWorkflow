@@ -25,7 +25,7 @@ namespace DocumentWorkflow.Core.Services
             var template = category.CustomTemplateFileName ??= category.DocumentType.TemplateFileName;
 
             var fileFolder = @"Documents\";
-            fileFolder += category.ParentCategory == null ? category.Name : @$"{category.ParentCategory.Name}\{category.Name}";
+            fileFolder += category.ParentCategoryId == null ? @$"{category.Name}\" : @$"{category.ParentCategory.Name}\{category.Name}\";
 
             var docFilename = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
             Fill(document.Fields, template, fileFolder, docFilename);
@@ -33,18 +33,18 @@ namespace DocumentWorkflow.Core.Services
             var content = string.Join(",", document.Fields.Select(x => x.Value));
             
             //TODO: заменить.
-            var docName = docFilename;
+            var docName = fileFolder + docFilename;
 
-            _documentsRepository.AddDocument(document.CategoryId, docFilename, content, docName);
+            _documentsRepository.AddDocument(document.CategoryId, docName, content, docName);
         }
 
         private void Fill(List<ReplaceField> fields, string templateFilename, string folder, string documentFilename)
         {
             //TODO: Несколько ответственностей
             Directory.CreateDirectory(folder);
-            File.Copy(templateFilename, @$"{folder}\{documentFilename}", true);
+            File.Copy(templateFilename, @$"{folder}{documentFilename}", true);
 
-            var file = File.ReadAllText(@$"{folder}\{documentFilename}");
+            var file = File.ReadAllText(@$"{folder}{documentFilename}");
 
             var gender = fields.SingleOrDefault(f => f.Name == "$Местоимение_на_основании_пола$");
             if(gender != null)
@@ -55,7 +55,7 @@ namespace DocumentWorkflow.Core.Services
                 file = file.Replace(f.Name, f.Value);
             });
 
-            File.WriteAllText(@$"{folder}\{documentFilename}", file);
+            File.WriteAllText(@$"{folder}{documentFilename}", file);
         }
 
         private string GetGenderPronoun(string gender)

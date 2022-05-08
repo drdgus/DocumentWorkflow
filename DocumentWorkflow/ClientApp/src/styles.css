@@ -17,3 +17,78 @@ code {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+app-print-layout {font-family: "Times New Roman"}
+
+.print {
+  height: 297mm;
+  width: 210mm;
+  font-size: 14px;
+  margin: auto;
+  border: 1px solid #e1e1e1;
+  padding: 20px 10px 20px 20px;
+
+}
+.print h1 {
+  font-size: 24px;
+}
+.print h2 {
+  font-size: 20px;
+  color: #F00;
+}
+.print　h3 {
+  font-size: 18px;
+}
+.print　*, .print *:before, .print　*:after {
+  color: #000;
+  box-shadow: none;
+  text-shadow: none;
+}
+.print a[href^="http"]:after {
+  content: " (" attr(href) ")";
+}
+.print　ul, .print　ol, .print　table {
+  page-break-inside: avoid;
+}
+
+
+@media print {
+  app-root app-nav-menu { display: none; }
+  app-root > app-print-layout { display: block; }
+  .print{
+    padding: 0!important;
+    margin: 0!important;
+  }
+
+  html, body {
+    height: 297mm;
+    width: 210mm;
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    color: #F00;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  *, *:before, *:after {
+    color: #000;
+    box-shadow: none;
+    text-shadow: none;
+  }
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+  }
+  ul, ol, table {
+    page-break-inside: avoid;
+  }
+}
+
+@page {
+  margin: 20mm 10mm 20mm 20mm;
+}
+

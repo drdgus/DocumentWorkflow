@@ -40,7 +40,7 @@ namespace DocumentWorkflow.Core.DAL.Repositories
         {
             _dbContext.DocumentCategories.Add(new DocumentCategory
             {
-                ParentId = category.ParentId,
+                ParentCategoryId = category.ParentCategoryId,
                 Name = category.Name,
                 CustomTemplateFileName = category.CustomTemplateFileName,
                 DocumentTypeId = category.DocumentTypeId,
@@ -53,6 +53,7 @@ namespace DocumentWorkflow.Core.DAL.Repositories
             return _dbContext.DocumentCategories
                 .Include(c => c.DocumentType)
                 .Include(c => c.LogBook)
+                .Include(c => c.ParentCategory)
                 .Single(c => c.Id == documentCategoryId);
         }
     }
