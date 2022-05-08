@@ -3,8 +3,7 @@
   <div class="container">
     <router-outlet></router-outlet>
   </div>
-  <div [class.isPrinting]="printService.isPrinting">
-    <button (click)="onPrintInvoice()">PRINT INVOICE</button>
+  <div>
     <router-outlet name="print"></router-outlet>
   </div>
 </body>

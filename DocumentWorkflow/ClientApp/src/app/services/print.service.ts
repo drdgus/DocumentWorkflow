@@ -5,12 +5,10 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class PrintService {
-  isPrinting = false;
 
   constructor(private router: Router) { }
 
   printDocument(documentName: string, documentData: string[]) {
-    this.isPrinting = true;
     this.router.navigate(['/',
       { outlets: {
           'print': ['print', documentName, documentData.join()]
@@ -20,7 +18,6 @@ export class PrintService {
   onDataReady() {
     setTimeout(() => {
       window.print();
-      this.isPrinting = false;
       this.router.navigate([{ outlets: { print: null }}]);
     });
   }

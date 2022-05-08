@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
-import {PrintService} from "../print.service";
+import {PrintService} from "../../services/print.service";
 
 @Component({
   selector: 'app-invoice',
@@ -14,15 +14,13 @@ export class InvoiceComponent implements OnInit {
   public content: string = "";
 
   constructor(route: ActivatedRoute,
-              private http: HttpClient,
-              private printService: PrintService) {
-    this.invoiceIds = route.snapshot.params['invoiceIds']
-      .split(',');
+              private http: HttpClient) {
+    this.invoiceIds = route.snapshot.params['invoiceIds'].split(',');
   }
 
   ngOnInit(): void {
-    this.getDocumentForPrint(103).subscribe(next => this.content = next.html);
-    this.printService.onDataReady();
+    let docId: number = +this.invoiceIds[0];
+    this.getDocumentForPrint(docId).subscribe(next => this.content = next.html);
   }
 
   public getDocumentForPrint(docId: number)

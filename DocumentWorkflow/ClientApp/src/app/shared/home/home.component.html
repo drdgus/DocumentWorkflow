@@ -16,31 +16,78 @@
       </select>
     </div>
 
-    <div class="col-9 bg-light card">
-      <div class="card-body">
-        <div>
-          <button class="btn btn-outline-primary" [disabled]="categoryIsParent" [routerLink]="['./create-document', selectedCategoryId]">
+    <div class="col-9">
+      <div class="card">
+        <div class="card-body">
+          <button class="btn btn-primary" [class.btn-outline-primary]="categoryIsParent" [disabled]="categoryIsParent" [routerLink]="['./create-document', selectedCategoryId]">
             Создать документ
           </button>
         </div>
+      </div>
+      <div class="bg-light card mt-2">
+        <div class="card-body">
 
-        <table class="table mt-4">
-          <thead>
-          <tr>
-            <th>№ Документа</th>
-            <th>Название</th>
-            <th>Дата создания</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let document of documents">
-            <td>{{document.number.toString().replace(".", " / ")}}</td>
-            <td>{{document.name}}</td>
-            <td>{{document.createdDate | date:"MMM d, y, HH:mm:ss"}}</td>
-          </tr>
-          </tbody>
-        </table>
+          <div style="overflow-y: scroll; height: 600px">
+            <style>
+              table {
+                width: 100%;
+              }
+
+              .mat-form-field {
+                font-size: 14px;
+                width: 100%;
+              }
+            </style>
+            <mat-form-field appearance="standard">
+              <mat-label>Фильтр</mat-label>
+              <input matInput (keyup)="applyFilter($event)" placeholder="Поиск" #input>
+            </mat-form-field>
+
+            <style>
+              .row-is-clicked {
+                font-weight: bold;
+              }
+              .mat-row .mat-cell {
+                border-bottom: 1px solid transparent;
+                border-top: 1px solid transparent;
+                cursor: pointer;
+              }
+
+              .mat-row:hover .mat-cell {
+                border-color: currentColor;
+              }
+            </style>
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+              <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Номер</th>
+                <td mat-cell *matCellDef="let element"> {{element.number.toString().replace(".", " / ")}} </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Название</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+              <ng-container matColumnDef="createdDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Дата создания</th>
+                <td mat-cell *matCellDef="let element"> {{element.createdDate | date:"MMM d, y, HH:mm:ss"}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr
+                mat-row
+                (click)="navigateToPrintPage(row.id)"
+                [class.row-is-clicked]="selectedRow.id == row.id"
+                *matRowDef="let row; columns: displayedColumns;"></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">Нет документов соответствующих фильтру "{{input.value}}"</td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
+
+
   </div>
 </div>

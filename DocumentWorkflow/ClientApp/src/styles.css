@@ -55,6 +55,8 @@ app-print-layout {font-family: "Times New Roman"}
 @media print {
   @media print {
     .isPrinting > * { display: none; }
+    app-nav-menu { display: none; }
+    .print-btn {display: none}
     .isPrinting app-print-layout { display: block; }
   }
   .print{

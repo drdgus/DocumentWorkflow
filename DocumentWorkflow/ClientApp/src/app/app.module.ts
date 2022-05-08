@@ -16,8 +16,8 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatTableModule} from "@angular/material/table";
 import {MatInputModule} from "@angular/material/input";
 import {MatSortModule} from "@angular/material/sort";
-import { PrintLayoutComponent } from './print-layout/print-layout.component';
-import { InvoiceComponent } from './invoice/invoice.component';
+import { PrintLayoutComponent } from './shared/print-layout/print-layout.component';
+import { InvoiceComponent } from './shared/invoice/invoice.component';
 
 registerLocaleData(localeRu);
 
