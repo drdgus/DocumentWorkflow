@@ -181,6 +181,7 @@ namespace DocumentWorkflow.Core.DAL
                 Position = $"Должность {rnd.Next(1, 21)}"
             }));
 
+#if DEBUG
             context.Documents.AddRange(Enumerable.Range(1, 100).Select(i => new Document
             {
                 Id = i,
@@ -205,6 +206,7 @@ namespace DocumentWorkflow.Core.DAL
             }));
 
             context.LogBooks.First(b => b.Id == 1).LastDocumentNumber = 100;
+#endif
 
             context.SaveChanges();
         }
