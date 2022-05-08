@@ -29,7 +29,7 @@ namespace DocumentWorkflow.Core.Services
                     TemplateField.Element.Students
                 }},
                 new ("$Местоимение_на_основании_пола$", Text, 4),
-                new ("$Ученик_класс$", Text, 5) { VisibleForUser = true, IsDisabled = true},
+                new ("$Ученик_класс$", Text, 5) { VisibleForUser = false, IsDisabled = true},
                 new ("$Учебный_год$", Number, 6, GetStartEducationYear()) {VisibleForUser = true, IsDisabled = true},
                 new ("$Дата_окончания_уг$", Number, 7, GetEndEducationYear()) {VisibleForUser = true, IsDisabled = true},
             };

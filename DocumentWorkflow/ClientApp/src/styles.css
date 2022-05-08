@@ -53,8 +53,10 @@ app-print-layout {font-family: "Times New Roman"}
 
 
 @media print {
-  app-root app-nav-menu { display: none; }
-  app-root > app-print-layout { display: block; }
+  @media print {
+    .isPrinting > * { display: none; }
+    .isPrinting app-print-layout { display: block; }
+  }
   .print{
     padding: 0!important;
     margin: 0!important;

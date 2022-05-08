@@ -41,7 +41,7 @@ registerLocaleData(localeRu);
         outlet: 'print',
         component: PrintLayoutComponent,
         children: [
-          { path: 'invoice', component: InvoiceComponent }
+          { path: 'invoice/:invoiceIds', component: InvoiceComponent }
         ]
       }
     ]),
