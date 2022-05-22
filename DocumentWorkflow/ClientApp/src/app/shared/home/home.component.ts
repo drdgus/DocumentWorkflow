@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   public types: MyDocumentType[] = new Array<MyDocumentType>();
   public categories: Category[] = new Array<Category>();
 
-  public selectedTypeId:number  = 0;
+  public selectedTypeId:number  = 5;
   public selectedCategoryId: number = 0;
   public categoryIsParent: boolean = true;
 
@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit {
   public ngOnInit(): void
   {
     this.setTypes();
+
+    this.onTypeChanged();
   }
 
   public constructor(private categoryService: CategoryService,

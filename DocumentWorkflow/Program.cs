@@ -22,6 +22,8 @@ builder.Services.AddSingleton<OrgSettings>();
 
 builder.Services.AddTransient<TemplateParser>();
 builder.Services.AddTransient<DocumentCreator>();
+builder.Services.AddTransient<ExcelParser>();
+builder.Services.AddTransient<StudentsImporter>();
 
 //builder.WebHost.ConfigureKestrel(options =>
 //{
@@ -47,7 +49,7 @@ using (var scope = app.Services.CreateScope())
     DbInitializer.Initialize(context);
 
     var orgSettings = services.GetRequiredService<OrgSettings>();
-    if (orgSettings.FullName == null)
+    if (string.IsNullOrWhiteSpace(orgSettings.FullName))
     {
         orgSettings.FullName = "Муниципальное казённое общеобразовательное учреждение Таежниниская школа № 20";
         orgSettings.FullNameGenitiveCase = "Муниципальным казённым общеобразовательным учреждением Таежниниская школа № 20";
@@ -57,6 +59,9 @@ using (var scope = app.Services.CreateScope())
         orgSettings.INN = "2407063008";
         orgSettings.KPP = "240701001";
     }
+
+    var studentsImporter = services.GetRequiredService<StudentsImporter>();
+    studentsImporter.Import(Path.Combine(AppContext.BaseDirectory, "Import", "Students.csv"));
 }
 
 app.UseHttpsRedirection();

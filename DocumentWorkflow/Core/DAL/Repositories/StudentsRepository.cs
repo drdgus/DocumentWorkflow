@@ -15,5 +15,14 @@ namespace DocumentWorkflow.Core.DAL.Repositories
         {
             return _dbContext.Students.ToList();
         }
+
+        public void AddStudents(IEnumerable<Student> students)
+        {
+            var oldStudents = _dbContext.Students.ToList();
+            _dbContext.Students.RemoveRange(oldStudents);
+
+            _dbContext.Students.AddRange(students);
+            _dbContext.SaveChanges();
+        }
     }
 }
