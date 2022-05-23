@@ -18,7 +18,7 @@ namespace DocumentWorkflow.Core.Services
             Directory.CreateDirectory(_documentsFolder);
         }
 
-        public void Create(NewDocument document)
+        public int Create(NewDocument document)
         {
             //TODO: Несколько ответственностей
             var category = _categoriesRepository.GetCategory(document.CategoryId);
@@ -35,7 +35,7 @@ namespace DocumentWorkflow.Core.Services
             //TODO: заменить.
             var docFileName = fileFolder + docName;
 
-            _documentsRepository.AddDocument(document.CategoryId, docFileName, content, docName);
+            return _documentsRepository.AddDocument(document.CategoryId, docFileName, content, docName);
         }
 
         private void Fill(List<ReplaceField> fields, string templateFilename, string folder, string documentFilename)

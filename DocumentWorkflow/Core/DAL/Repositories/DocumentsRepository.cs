@@ -25,7 +25,7 @@ public class DocumentsRepository
             .SingleOrDefault(d => d.Id == documentId);
     }
 
-    public void AddDocument(int categoryId, string filename, string content, string name)
+    public int AddDocument(int categoryId, string filename, string content, string name)
     {
         var category =  _dbContext.DocumentCategories.Single(c => c.Id == categoryId);
         category.LogBook.LastDocumentNumber++;
@@ -55,6 +55,8 @@ public class DocumentsRepository
         });
 
         _dbContext.SaveChanges();
+
+        return doc.Id;
 
     }
 }

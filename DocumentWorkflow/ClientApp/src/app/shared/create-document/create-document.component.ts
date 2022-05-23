@@ -10,6 +10,7 @@ import {RequiredModule} from "../../models/requiredModule";
 import {Student} from "../../models/student";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
+import {PrintService} from "../../services/print.service";
 
 
 @Component({
@@ -37,7 +38,8 @@ export class CreateDocumentComponent implements OnInit, AfterViewInit  {
     private route: ActivatedRoute,
     private categoryService: CategoryService,
     private documentService: DocumentService,
-    private studentsService: StudentsService){}
+    private studentsService: StudentsService,
+    private printService: PrintService){}
 
   public ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -52,8 +54,16 @@ export class CreateDocumentComponent implements OnInit, AfterViewInit  {
 
   public createDocument(): void {
     this.category.fields.concat(this.categoryFields);
-    this.documentService.createDocument(this.category).then(d => alert("Документ создан!"));
-    this.router.navigate(["/"]);
+    this.documentService.createDocument(this.category).then(lastDocId =>
+    {
+      this.navigateToPrintPage(lastDocId);
+    });
+  }
+
+  public navigateToPrintPage(documentId: number){
+    //const invoiceIds = ['101', '102'];
+    const invoiceIds = [documentId.toString()];
+    this.printService.printDocument('invoice', invoiceIds);
   }
 
   public onStudentSelected(student: Student): void{

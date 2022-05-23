@@ -49,7 +49,7 @@ public class DocumentsController : ControllerBase
     [HttpPut]
     public ActionResult Put([FromBody] NewDocument document)
     {
-        _documentCreator.Create(document);
-        return Ok();
+        var docId = _documentCreator.Create(document);
+        return Ok(docId);
     }
 }

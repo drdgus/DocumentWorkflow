@@ -27,6 +27,8 @@ export class HomeComponent implements OnInit {
 
   public ngOnInit(): void
   {
+    this.printService.isNotPrinting = true;
+
     this.setTypes();
 
     this.onTypeChanged();
