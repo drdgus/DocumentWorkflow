@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using DocumentWorkflow.Core.DAL.Entities;
 using DocumentWorkflow.Core.DAL.Repositories;
 using DocumentWorkflow.Core.Models;
@@ -23,22 +24,21 @@ namespace DocumentWorkflow.Core.Services
             //TODO: Несколько ответственностей
             var category = _categoriesRepository.GetCategory(document.CategoryId);
             var template = category.CustomTemplateFileName ??= category.DocumentType.TemplateFileName;
+            var templateFileName = new Regex(@"[^(\/|\\)]+(?=.html)").Match(template).Value;
+
 
             var fileFolder = _documentsFolder;
             fileFolder = category.ParentCategoryId == null ? Path.Combine(_documentsFolder, category.Name) : Path.Combine(_documentsFolder, category.ParentCategory.Name, category.Name);
 
-#if DEBUG
-            var docName = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
-#endif
-#if RELEASE
-            var docName = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("/").Last()}";
-#endif
-            Fill(document.Fields, template, fileFolder, docName);
+            var docName = $"{document.Fields.Single(f => f.Name == "$Ученик_ФИО$").Value}";
+            var docNameWithCurrentTemplate = $"{category.Name}_№{category.LogBook.LastDocumentNumber + 1}_{templateFileName}_{document.Fields.Single(f => f.Name == "$Ученик_ФИО$").Value.Replace(" ", "_")}.html";
+
+            var docFileName = Path.Combine(fileFolder, docNameWithCurrentTemplate);
+            
+            Fill(document.Fields, template, fileFolder, docNameWithCurrentTemplate);
 
             var content = string.Join(",", document.Fields.Select(x => x.Value));
             
-            //TODO: заменить.
-            var docFileName = Path.Combine(fileFolder, docName);
 
             return _documentsRepository.AddDocument(document.CategoryId, docFileName, content, docName);
         }
