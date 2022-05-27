@@ -9,7 +9,7 @@ namespace DocumentWorkflow.Core.Services
     {
         private readonly CategoriesRepository _categoriesRepository;
         private readonly DocumentsRepository _documentsRepository;
-        private readonly string _documentsFolder = AppContext.BaseDirectory + @"\Documents\";
+        private readonly string _documentsFolder = Path.Combine(AppContext.BaseDirectory, "Documents");
 
         public DocumentCreator(CategoriesRepository categoriesRepository, DocumentsRepository documentsRepository)
         {
@@ -24,16 +24,21 @@ namespace DocumentWorkflow.Core.Services
             var category = _categoriesRepository.GetCategory(document.CategoryId);
             var template = category.CustomTemplateFileName ??= category.DocumentType.TemplateFileName;
 
-            var fileFolder = @"Documents\";
-            fileFolder += category.ParentCategoryId == null ? @$"{category.Name}\" : @$"{category.ParentCategory.Name}\{category.Name}\";
+            var fileFolder = _documentsFolder;
+            fileFolder = category.ParentCategoryId == null ? Path.Combine(_documentsFolder, category.Name) : Path.Combine(_documentsFolder, category.ParentCategory.Name, category.Name);
 
+#if DEBUG
             var docName = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("\\").Last()}";
+#endif
+#if RELEASE
+            var docName = $"{category.Name}_{category.LogBook.LastDocumentNumber + 1}_{template.Split("/").Last()}";
+#endif
             Fill(document.Fields, template, fileFolder, docName);
 
             var content = string.Join(",", document.Fields.Select(x => x.Value));
             
             //TODO: заменить.
-            var docFileName = fileFolder + docName;
+            var docFileName = Path.Combine(fileFolder, docName);
 
             return _documentsRepository.AddDocument(document.CategoryId, docFileName, content, docName);
         }
@@ -42,9 +47,9 @@ namespace DocumentWorkflow.Core.Services
         {
             //TODO: Несколько ответственностей
             Directory.CreateDirectory(folder);
-            File.Copy(templateFilename, @$"{folder}{documentFilename}", true);
+            File.Copy(templateFilename, Path.Combine(folder, documentFilename), true);
 
-            var file = File.ReadAllText(@$"{folder}{documentFilename}");
+            var file = File.ReadAllText(Path.Combine(folder, documentFilename));
 
             var gender = fields.SingleOrDefault(f => f.Name == "$Местоимение_на_основании_пола$");
             if(gender != null)
@@ -55,7 +60,7 @@ namespace DocumentWorkflow.Core.Services
                 file = file.Replace(f.Name, f.Value);
             });
 
-            File.WriteAllText(@$"{folder}{documentFilename}", file);
+            File.WriteAllText(Path.Combine(folder, documentFilename), file);
         }
 
         private string GetGenderPronoun(string gender)

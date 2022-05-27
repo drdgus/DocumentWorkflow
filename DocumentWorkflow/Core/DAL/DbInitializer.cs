@@ -125,7 +125,7 @@ namespace DocumentWorkflow.Core.DAL
                 {
                     Id = 1,
                     ParentCategoryId = null,
-                    Name = "Все",
+                    Name = "Справки",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
                     LogBookId = 1,
@@ -134,7 +134,7 @@ namespace DocumentWorkflow.Core.DAL
                 {
                     Id = 2,
                     ParentCategoryId = 1,
-                    Name = "Справка",
+                    Name = "об обучении",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
                     LogBookId = 1,
@@ -144,7 +144,7 @@ namespace DocumentWorkflow.Core.DAL
                 {
                     Id = 3,
                     ParentCategoryId = 1,
-                    Name = "Справка для работника",
+                    Name = "для работника",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
                     LogBookId = 1,
