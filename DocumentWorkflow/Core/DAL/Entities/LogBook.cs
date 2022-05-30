@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public float LastDocumentNumber { get; set; }
         public DateTime NumberingResetDate { get; set; }
         public DateTime LastNumberingResetDate { get; set; }
     }

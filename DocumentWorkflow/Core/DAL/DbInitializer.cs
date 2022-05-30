@@ -56,10 +56,21 @@ namespace DocumentWorkflow.Core.DAL
 
             context.UsersRoles.AddRange(new[]
             {
-                new UserRoles(1, 1),
-                new UserRoles(2, 2),
-                new UserRoles(2, 3)
-
+                new UserRoles
+                {
+                    UserId = 1,
+                    RoleId = 1
+                },
+                new UserRoles
+                {
+                    UserId = 2,
+                    RoleId = 2
+                },
+                new UserRoles
+                {
+                    UserId = 2,
+                    RoleId = 3
+                }
             });
             context.SaveChanges();
 
@@ -93,7 +104,7 @@ namespace DocumentWorkflow.Core.DAL
                 {
                     Id = 5,
                     Name = "Справки",
-                    TemplateFileName = "Справки.html"
+                    TemplateFileName = @"Templates\certificate.html"
                 },
             });
             context.SaveChanges();
@@ -102,6 +113,7 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = 1,
                 Name = "Журнал регистрации справок",
+                LastDocumentNumber = 0,
                 NumberingResetDate = new DateTime(2022, 10, 1),
                 LastNumberingResetDate = default
             });
@@ -112,18 +124,43 @@ namespace DocumentWorkflow.Core.DAL
                 new DocumentCategory
                 {
                     Id = 1,
-                    ParentId = null,
-                    Name = "Все",
+                    ParentCategoryId = null,
+                    Name = "Справки",
                     DocumentTypeId = 5,
                     CustomTemplateFileName = null,
                     LogBookId = 1,
+                },
+                new DocumentCategory
+                {
+                    Id = 2,
+                    ParentCategoryId = 1,
+                    Name = "об обучении",
+                    DocumentTypeId = 5,
+                    CustomTemplateFileName = null,
+                    LogBookId = 1,
+                    RequiredModule = RequiredModule.Students
+                },
+                new DocumentCategory
+                {
+                    Id = 3,
+                    ParentCategoryId = 1,
+                    Name = "для работника",
+                    DocumentTypeId = 5,
+                    CustomTemplateFileName = null,
+                    LogBookId = 1,
+                    RequiredModule = RequiredModule.Employees
                 }
             });
             context.SaveChanges();
 
             context.CategoriesRights.AddRange(new []
             {
-                new CategoryRights(2, null, true)
+                new CategoryRights
+                {
+                    CanWrite = true,
+                    RoleId = 2,
+                    DocumentCategoryId = null,
+                }
             });
 
             var rnd = new Random();
@@ -131,8 +168,8 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 FullName = $"Ученик №{i}",
-                BirthDay = new DateTime(2015, rnd.Next(1, 12), rnd.Next(1, 30)),
-                Class = rnd.Next(1, 11) + (i % 3 == 0 ? "А" : "Б"),
+                BirthDay = new DateTime(2015, rnd.Next(1, 13), rnd.Next(1, 29)),
+                Class = rnd.Next(1, 12) + (i % 3 == 0 ? "А" : "Б"),
                 Gender = i % 2 == 0 ? Student.Genders.Male : Student.Genders.Female
             }));
 
@@ -140,9 +177,36 @@ namespace DocumentWorkflow.Core.DAL
             {
                 Id = i,
                 FullName = $"Работник № {i}",
-                BirthDay = new DateTime(rnd.Next(1960, 2003), rnd.Next(1, 12), rnd.Next(1, 30)),
-                Position = $"Должность {rnd.Next(1, 20)}"
+                BirthDay = new DateTime(rnd.Next(1960, 2004), rnd.Next(1, 13), rnd.Next(1, 29)),
+                Position = $"Должность {rnd.Next(1, 21)}"
             }));
+
+#if DEBUG
+            context.Documents.AddRange(Enumerable.Range(1, 100).Select(i => new Document
+            {
+                Id = i,
+                Number = (i % 10 == 0 ? i + 0.1f : i),
+                CreatedDate = DateTime.Now.AddHours(-1).AddSeconds(i),
+                Name = $"Название {i}",
+                Content = "Et aliquip lorem et eu et facilisi sed sit tempor amet ipsum vel amet justo eirmod sed ipsum sea rebum",
+                FileName = $"{i}.html",
+                UserId = 1,
+                DocumentCategoryId = rnd.Next(2,4)
+            }));
+            context.SaveChanges();
+
+            context.DocumentsHistory.AddRange(Enumerable.Range(1, 100).Select(i => new History
+            {
+                Id = i,
+                DocumentId = i,
+                ChangeDate = DateTime.Now.AddHours(-1).AddSeconds(i),
+                EditedField = "Создание",
+                OldValue = "",
+                NewValue = ""
+            }));
+
+            context.LogBooks.First(b => b.Id == 1).LastDocumentNumber = 100;
+#endif
 
             context.SaveChanges();
         }

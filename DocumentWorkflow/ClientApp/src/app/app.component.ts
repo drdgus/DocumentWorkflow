@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {PrintService} from "./services/print.service";
 
 @Component({
   selector: 'app-root',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor(public printService: PrintService) { }
 }
