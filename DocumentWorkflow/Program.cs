@@ -4,14 +4,20 @@ using DocumentWorkflow.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using DbContext = DocumentWorkflow.Core.DAL.DbContext;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication
+    .CreateBuilder(args);
+
+builder.Host
+    .UseWindowsService();
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
 
+var dbFile = Path.Combine(AppContext.BaseDirectory, "DocumentWorkflow.db");
+
 builder.Services.AddDbContext<DbContext>(options =>
-    options.UseSqlite("Data Source=DocumentWorkflow.db;"));
+    options.UseSqlite($"Data Source={dbFile};"));
 
 builder.Services.AddTransient<CategoriesRepository>();
 builder.Services.AddTransient<TypesRepository>();
@@ -42,6 +48,12 @@ if (!app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
+    if (File.Exists(Path.Combine(AppContext.BaseDirectory, "wwwroot", "custom.css")) == false)
+    {
+        File.Create(Path.Combine(AppContext.BaseDirectory, "wwwroot", "custom.css"));
+    }
+
+
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<DbContext>();

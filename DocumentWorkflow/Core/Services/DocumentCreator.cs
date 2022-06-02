@@ -24,6 +24,7 @@ namespace DocumentWorkflow.Core.Services
             //TODO: Несколько ответственностей
             var category = _categoriesRepository.GetCategory(document.CategoryId);
             var template = category.CustomTemplateFileName ??= category.DocumentType.TemplateFileName;
+            template = Path.Combine(AppContext.BaseDirectory, template);
             var templateFileName = new Regex(@"[^(\/|\\)]+(?=.html)").Match(template).Value;
 
 

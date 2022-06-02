@@ -49,6 +49,8 @@ namespace DocumentWorkflow.Core.Services
 
         public List<TemplateField> GetFields(string filename)
         {
+            filename = Path.Combine(AppContext.BaseDirectory, filename);
+
             var fields = new List<TemplateField>();
 
             if (string.IsNullOrWhiteSpace(filename)) return fields;

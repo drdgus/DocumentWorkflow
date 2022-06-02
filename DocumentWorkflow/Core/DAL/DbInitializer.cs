@@ -163,6 +163,7 @@ namespace DocumentWorkflow.Core.DAL
                 }
             });
 
+#if DEBUG
             var rnd = new Random();
             context.Students.AddRange(Enumerable.Range(1, 370).Select(i => new Student
             {
@@ -181,7 +182,6 @@ namespace DocumentWorkflow.Core.DAL
                 Position = $"Должность {rnd.Next(1, 21)}"
             }));
 
-#if DEBUG
             context.Documents.AddRange(Enumerable.Range(1, 100).Select(i => new Document
             {
                 Id = i,

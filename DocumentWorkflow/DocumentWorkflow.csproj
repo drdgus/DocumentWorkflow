@@ -12,10 +12,11 @@
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
   </ItemGroup>
 
