@@ -20,6 +20,7 @@ namespace DocumentWorkflow.Core.DAL.Repositories
         {
             var oldStudents = _dbContext.Students.ToList();
             _dbContext.Students.RemoveRange(oldStudents);
+            _dbContext.SaveChanges();
 
             _dbContext.Students.AddRange(students);
             _dbContext.SaveChanges();

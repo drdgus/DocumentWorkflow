@@ -48,10 +48,12 @@ if (!app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
+#if !DEBUG
     if (File.Exists(Path.Combine(AppContext.BaseDirectory, "wwwroot", "custom.css")) == false)
     {
         File.Create(Path.Combine(AppContext.BaseDirectory, "wwwroot", "custom.css"));
     }
+#endif
 
 
     var services = scope.ServiceProvider;
@@ -63,8 +65,8 @@ using (var scope = app.Services.CreateScope())
     var orgSettings = services.GetRequiredService<OrgSettings>();
     if (string.IsNullOrWhiteSpace(orgSettings.FullName))
     {
-        orgSettings.FullName = "Муниципальное казённое общеобразовательное учреждение Таежниниская школа № 20";
-        orgSettings.FullNameGenitiveCase = "Муниципальным казённым общеобразовательным учреждением Таежниниская школа № 20";
+        orgSettings.FullName = "Муниципальное казённое общеобразовательное учреждение Таежнинская школа № 20";
+        orgSettings.FullNameGenitiveCase = "Муниципального казённого общеобразовательного учреждения Таежнинская школа №20 Богучанского района Красноярского края";
         orgSettings.Address = "663467, Красноярский край, Богучанский район, п. Таежный, ул. Новая, 15";
         orgSettings.Phone = "8 (39162) 26-606";
         orgSettings.Email = "tsosh20@mail.ru";
