@@ -53,6 +53,7 @@ namespace DocumentWorkflow.Core.Services
             var file = File.ReadAllText(Path.Combine(folder, documentFilename));
 
             var gender = fields.SingleOrDefault(f => f.Name == "$Местоимение_на_основании_пола$");
+            var studentClass = fields.SingleOrDefault(f => f.Name == "$Ученик_класс$");
             if(gender != null)
                 gender.Value = GetGenderPronoun(gender.Value);
 

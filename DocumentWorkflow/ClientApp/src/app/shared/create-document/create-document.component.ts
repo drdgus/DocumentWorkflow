@@ -74,6 +74,8 @@ export class CreateDocumentComponent implements OnInit, AfterViewInit  {
     this.categoryFields.find(i => i.name == "$Ученик_ФИО$")!.value = student.fullName;
 
     this.category.fields.find(i => i.name == "$Местоимение_на_основании_пола$")!.value = student.gender;
+
+    this.category.fields.find(i => i.name == "$Ученик_класс$")!.value = student.class;
   }
 
   private setCategory(): void {

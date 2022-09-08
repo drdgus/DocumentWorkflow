@@ -24,6 +24,10 @@ namespace DocumentWorkflow.Core.Services
 
             for (var row = sr.ReadLine(); row != null; row = sr.ReadLine())
             {
+                var cols = row.Split(';');
+
+                if (cols.Length != 4) continue;
+
                 var student = ParseStudent(row);
                 if(student != null)
                     students.Add(student);
@@ -35,6 +39,7 @@ namespace DocumentWorkflow.Core.Services
         private static Student? ParseStudent(string row)
         {
             var studentInfo = row.Split(';');
+
             if (studentInfo.Any(string.IsNullOrWhiteSpace)) return null;
 
             var newStudent = new Student
